@@ -1,0 +1,226 @@
+# Vibe-Coding Prompt Pack — MLR RuleOps Demo App
+
+**How to use:** paste **Prompt 1** into Google AI Studio / Lovable / v0 / Bolt / Cursor as a single message. Then use the follow-up prompts to refine. Prompt 1 is self-contained — it includes the data seed, the logic rules, and the non-negotiables.
+
+---
+
+## PROMPT 1 — Master build prompt (paste this first)
+
+````
+Build a single-page web application called "MLR RuleOps" — a demo of an AI-assisted
+change-management platform for a pharmaceutical MLR (Medical/Legal/Regulatory) rules engine.
+
+## CONTEXT
+Pharma companies run an "AI Assisted Review" gate that checks promotional content against
+compliance rules before formal MLR review. Business users file tickets asking to change those
+rules (e.g. "update the US cardiovascular disclaimer to cite the 2026 trial and drop the 2020
+study"). Today admins do this by hand and it takes 20-36 days. This app shows AI parsing the
+ticket, finding the right rule, drafting the change, regression-testing it, and STOPPING for
+human approval before deploying.
+
+## TECH
+- React + TypeScript + Tailwind CSS. Single-page app with client-side routing.
+- No backend. All state in memory (React context or Zustand). Seed data hard-coded as JSON.
+- Dark theme: background #0E1726, panels #16223A, accent gold #C9A34E, text #FFFFFF / #CADCFC.
+- Font: Georgia for headings, system sans for body. Professional, enterprise, uncluttered.
+
+## SCREENS (exactly 4 — do not add more)
+1. /tickets — Ticket Queue
+2. /workspace/:ticketId — Change Workspace (AI parse → rule discovery → diff)
+3. /workspace/:ticketId#test — Test & Risk panel (revealed on same page after running pipeline)
+4. /approval/:changeId and /audit/:changeId — HITL approval + audit trail
+
+Left sidebar nav with only: Tickets · Change Workspace · Approvals · Audit.
+Footer on every screen: "Illustrative / synthetic data — not real regulatory content".
+
+### SCREEN 1 — Ticket Queue
+Table of tickets: Ticket ID, Source, Title, Market, Brand, Change Type, Risk (coloured chip:
+LOW green / MEDIUM amber / HIGH red / CRITICAL dark red), Stage, Age.
+Search box + Stage filter + Risk filter. Clicking a row opens /workspace/:ticketId.
+Include a "Reset demo" button that returns all tickets to stage RECEIVED.
+
+### SCREEN 2 — Change Workspace
+Header shows ticket ID + title and a "▶ Run pipeline" button.
+When clicked, reveal four panels IN SEQUENCE with ~600ms delay between each:
+
+Panel A "Original request" — the raw ticket text + requester + priority.
+
+Panel B "AI interpretation" — a small table: Intent, Market, Brand, Category, and a large
+confidence percentage (e.g. 98%).
+
+Panel C "Rule discovery & disambiguation" — THE MOST IMPORTANT PANEL.
+Show a table of AT LEAST 3 candidate rules with columns: Rule ID, Layer, Scope, Match %,
+Status. Exactly one row is highlighted and labelled SELECTED; the others are labelled
+"overridden" or "less specific". Below the table show a reasoning box:
+"Why this rule: exact US market + Drug A brand + Cardiovascular + Disclaimer match.
+Market-level rule overridden by the more specific Market-Brand rule."
+NEVER show only a single matched rule — always show the candidates it rejected.
+
+Panel D "Proposed change — before / after" — render the disclaimer as READABLE PROSE with
+the removed text in red with strikethrough and the added text in green highlight.
+DO NOT show raw config tokens like REMOVE_REFERENCE "CIT-2020-001". A human must be able to
+read the sentence. Show pills underneath: "v4 → v5 (draft)", "syntax valid ✓",
+"dependencies intact ✓".
+
+Footer button: "Run validation & tests →" which reveals Screen 3 content below.
+
+### SCREEN 3 — Test & Risk (same route, anchor #test)
+Row of 5 stat cards: Assets affected 34 | Reviews replayed 48 | Unchanged 46 |
+Changed as expected 2 | Broken 0 (render "Broken 0" in green, large).
+
+Then a "Regression detail" table: Asset, Market/Brand, Before, After, Note.
+CRITICAL: one row (CNT-003) must show Before=FAIL → After=PASS, highlighted, with the note
+"Now passes — 2026 citation is live". This proves the change is correct, not just valid.
+Other rows stay PASS→PASS unchanged.
+
+Then two cards: "Risk assessment" (shows the computed risk chip + reason) and
+"Required gate" (shows the gate text + a "Send for approval →" button).
+If Broken > 0, disable the approval button.
+
+### SCREEN 4 — Approval & Audit
+Top banner (amber/gold): "⏸ Pipeline halted. This change will NOT deploy until an authorised
+MLR Admin approves it. No LLM writes to production."
+
+Cards: "Change summary" (rule, version v4→v5, risk chip, test result, requester) and
+"Current live rule (input transparency)" showing the production value before approval, with a
+"view full rule JSON" expander.
+
+"Approver action" card: a REQUIRED free-text "Approval rationale" field. The
+"✓ Approve & deploy" button stays DISABLED until rationale is non-empty. Also
+"Request changes" and "Reject" secondary buttons.
+
+"Audit trail (append-only)" table: Time, Actor, Action, Detail. Rows:
+TICKET_RECEIVED (system) → INTENT_PARSED (AI, conf 98%) → RULE_SELECTED (AI, 2 candidates
+rejected) → REGRESSION_PASSED (48 replayed, 0 broken). After the user clicks Approve, APPEND
+two new rows live: APPROVED (Priya Shah, with her typed rationale) and DEPLOYED (system,
+v4 → v5). Never delete rows.
+Include a "↺ Rollback to v4" button that appends a ROLLED_BACK audit row.
+
+## CONDITIONAL STATES (implement all three)
+State A — Disambiguation gate: if match confidence < 90% OR two candidates are within 10% of
+each other, show an amber banner "⚠ Ambiguous request — market not specified" and require the
+user to click "select" on one of the candidate rules before the pipeline continues.
+
+State B — Critical dual approval: if riskTier is CRITICAL, the approval screen shows TWO
+approver rows (Dr. M. Reid / Scientific — PENDING, and Priya Shah / MLR Admin — SIGNED), a
+reference to "RMCB-SOP-114", and the deploy button is DISABLED and reads
+"Deploy — blocked (1 of 2 signed)".
+
+State C — Guardrail block: if the request targets a safety/ISI field AND the intent is to
+weaken/soften/remove, do NOT generate a draft. Show a red banner "⛔ Change refused. Request
+would weaken approved safety language." plus "Action: escalated to RMCB". Approve is unavailable.
+
+## RISK → GATE LOGIC (hard-code this)
+LOW      = text-string change, single market, no safety field   → Single approval
+MEDIUM   = text-string change with market-wide blast radius      → Single approval + rationale
+HIGH     = restricted term or claim wording                      → Approval + impact report
+CRITICAL = business-logic/routing change or scientific value     → Dual approval + RMCB, deploy blocked
+
+## SEED DATA (use exactly these tickets)
+TKT-1001 | ServiceNow | "Update the US cardiovascular disclaimer for Drug A to include the new
+  2026 clinical trial citation and remove reference to the 2020 study." | US | Drug A |
+  Text string | LOW | confidence 98% | target RULE-US-DRUGA-CV-014
+TKT-1006 | Jira | "Add a routing rule: if Drug X is mentioned in Japan promotional material,
+  require both RA and Scientific reviewer sign-off." | JP | Drug X | Business logic | CRITICAL
+TKT-1009 | Jira | "Reword the US patient safety statement to soften the ocular adverse-reaction
+  warning tone." | US | Drug B | Text string | HIGH | → triggers guardrail block
+TKT-1004 | ServiceNow | "Update the disclaimer to add the 2026 citation." | — | Drug A |
+  Text string | MEDIUM | confidence 62% | → triggers disambiguation gate
+TKT-1016 | ServiceNow | "Roll back the US disclaimer to the version before the 2026 citation
+  change." | US | Drug A | Rollback | MEDIUM
+
+Candidate rules for TKT-1001:
+  RULE-US-DRUGA-CV-014 | Market-Brand | US · Drug A · Cardiovascular | 98% | SELECTED
+  RULE-US-CV-002       | Market       | US · all brands              | 71% | overridden
+  RULE-DRUGA-BASE-007  | Brand        | Global · Drug A              | 64% | less specific
+
+Rule content before: "Drug A is indicated to reduce cardiovascular risk in appropriate adults.
+(Smith et al., 2020, CV-OUTCOMES) Please see full Prescribing Information."
+Rule content after: same sentence but "(Smith et al., 2020, CV-OUTCOMES)" removed and
+"(Johnson et al., 2026, CV-OUTCOMES-2)" added.
+
+Regression assets: CNT-003 (US/Drug A) FAIL→PASS [highlight]; CNT-001 (US/Drug A) PASS→PASS;
+CNT-004 (DE/Drug A) PASS→PASS "DE rule untouched"; CNT-013 (US/Drug A) FAIL→FAIL "unrelated
+superlative claim".
+
+## NON-NEGOTIABLES
+1. The pipeline MUST halt at AWAITING_APPROVAL. Never auto-deploy. Never show the golden
+   ticket as already closed on load.
+2. Rule discovery always shows ≥3 candidates with match % and an explicit selection reason.
+3. The diff is human-readable prose, never config tokens.
+4. The regression panel highlights the FAIL→PASS row and shows "Broken 0".
+5. Approval requires a typed rationale.
+6. Audit is append-only and updates live when the user approves.
+7. Synthetic-data disclaimer visible on every screen.
+8. Keep it to 4 screens — no settings, analytics, or admin pages.
+
+Make it look like enterprise software a pharma compliance team would trust: calm, dense but
+uncluttered, generous whitespace, no gradients, no emoji except the small status glyphs above.
+````
+
+---
+
+## PROMPT 2 — If the pipeline auto-completes (most common failure)
+
+````
+The pipeline is auto-advancing to deployed. Fix this: after the regression tests pass, the
+ticket stage must become AWAITING_APPROVAL and the app must STOP. The deploy action must only
+fire from the Approve button click on /approval/:changeId, and only when the rationale field
+is non-empty. On app load, TKT-1001 must always be in stage RECEIVED, never CLOSED.
+````
+
+## PROMPT 3 — Strengthen the disambiguation panel
+
+````
+Rework Panel C. Right now it reads like a single answer. It must display a table of at least
+three candidate rules with their Layer, Scope and Match %, with exactly one marked SELECTED
+and the others marked "overridden" or "less specific". Below it add a reasoning box that
+explains in one sentence why the selected rule won and why the market-level rule lost. This
+panel is the most important in the app — give it visual prominence.
+````
+
+## PROMPT 4 — Fix the diff rendering
+
+````
+The before/after currently shows raw tokens. Replace it with the full disclaimer sentence
+rendered as readable prose, where removed text has a red background with strikethrough and
+added text has a green background. A non-technical reviewer must be able to read the resulting
+sentence naturally.
+````
+
+## PROMPT 5 — Add the three conditional states
+
+````
+Add three conditional behaviours:
+1. If rule-match confidence < 90% or two candidates are within 10%, show an amber "Ambiguous
+   request" banner and require the user to pick a candidate before continuing (use TKT-1004).
+2. If riskTier is CRITICAL, the approval screen needs two approver rows (one PENDING, one
+   SIGNED), an RMCB-SOP-114 reference, and a disabled deploy button reading
+   "Deploy — blocked (1 of 2 signed)" (use TKT-1006).
+3. If the request targets a safety/ISI field with intent to weaken or soften, refuse: show a
+   red "Change refused" banner, state it is escalated to RMCB, generate no draft, and make
+   Approve unavailable (use TKT-1009).
+````
+
+## PROMPT 6 — Presenter safety
+
+````
+Add a "Reset demo" button in the header that restores all tickets to stage RECEIVED, clears
+generated changes, and empties the audit trail back to its seed rows. Also add keyboard
+shortcuts: "R" to reset, and "N" to advance the pipeline one step (so the presenter can pace
+the reveal manually instead of relying on timers).
+````
+
+---
+
+## Quick QA checklist before the demo
+- [ ] On load, TKT-1001 shows stage **RECEIVED** (not closed)
+- [ ] Panel C shows **3 candidates** with match %
+- [ ] Diff reads as a **sentence**, not tokens
+- [ ] Regression shows **CNT-003 FAIL→PASS** highlighted and **Broken 0**
+- [ ] Approve is **disabled** until rationale typed
+- [ ] After approve, **two new audit rows** appear live
+- [ ] TKT-1006 shows **dual approval, deploy blocked**
+- [ ] TKT-1009 shows **guardrail refusal**
+- [ ] Synthetic-data footer on every screen
+- [ ] "Reset demo" works
