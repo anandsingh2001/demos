@@ -1,0 +1,448 @@
+# Enterprise Engagement Orchestration — Demo Build Prompt Pack
+
+**For:** Google AI Studio / Lovable / v0 / Cursor / Claude Code
+**Deliverable:** one single-page web app, three modules, one continuous narrative
+**Data:** `orchestration_demo_data.json` — fully synthetic, client-agnostic, swappable
+
+---
+
+## How to use this pack
+
+Feed **Prompt 0** first. It establishes the app shell, design system, routing and data contract.
+Then feed **Prompts 1 → 5** in order. Each builds one screen group onto the existing shell.
+Finish with **Prompt 6** (polish and QA).
+
+Do not feed all prompts at once. Each one assumes the previous has been built.
+
+---
+
+## PROMPT 0 — App shell, design system, routing
+
+```
+Build a single-page React application (Vite + TypeScript + Tailwind) called
+"Orchestrate" — an executive demo of enterprise engagement orchestration for a
+pharmaceutical commercial organisation.
+
+This is a DEMO, not a product. Priorities in order:
+1. Visual credibility for a senior executive audience
+2. Clarity of the narrative
+3. Zero clutter
+There is no backend. All state is in-memory, loaded from a single JSON file.
+
+DATA
+Load /data/orchestration_demo_data.json at startup into a React context called
+DemoDataContext. Every screen reads from this context. Never hardcode content
+that exists in the JSON. The JSON shape is documented at the end of this prompt.
+
+DESIGN SYSTEM — apply strictly and consistently
+- Background: #F4F7F9. Cards: #FFFFFF with 1px #D8E1E8 border, 6px radius, no drop shadows.
+- Primary/dark: #0B2740 (navy). Ink text: #13293D. Muted text: #5C7080.
+- Accent teal: #0E7C86. Signal indigo: #5B6ABF. Warning amber: #E9B44C. Suppressed red: #B03A2E.
+- Each card has a 4px colour bar along its TOP edge indicating its category colour.
+- Typography: headings in a serif (Georgia or 'Source Serif 4'); body and UI in
+  Inter or system sans. Headings 20-28px semibold. Body 13-14px. Labels 10px
+  uppercase, letter-spacing 0.08em, muted.
+- Generous whitespace: 24px card padding, 16px grid gaps, 32px page margins.
+- NO gradients, NO glow effects, NO emoji, NO icon-heavy UI, NO animated agent
+  swirls or network particle backgrounds. Restraint is the aesthetic.
+- Motion only where it carries meaning: rows reordering, a status changing, a
+  counter debiting. 200-300ms ease-out. Nothing decorative.
+
+LAYOUT
+- Fixed left sidebar, 240px, background #0B2740, white text.
+  - Wordmark "Orchestrate" at top, small amber square as the mark.
+  - Nav items grouped under a label "MODULES":
+      1 · Shared Segmentation      → /segmentation
+      2 · Living Plan              → /plan
+      3 · Arbitration              → /arbitration
+    then a second group "VIEWS":
+      Role Views                   → /roles
+      Connective Demo              → /connect
+  - Active item: amber left bar + lighter navy background.
+  - At the bottom of the sidebar, a small persona switcher (see Prompt 4).
+- Main region: 32px padding. Every page starts with a page header block:
+      small uppercase eyebrow (module label)
+      H1 page title (serif)
+      one-line subtitle in muted text
+- A persistent thin "Account context" strip beneath the page header showing the
+  hero account: name, archetype, region, enterprise tier badge, and a capacity
+  meter "n of N touches used". This strip is the continuity device — it must be
+  visible on every module page and must reflect live state.
+
+ROUTING
+Use react-router. Routes: /segmentation (default), /plan, /arbitration, /roles,
+/connect. Deep-link safe. No auth, no login screen, no settings page.
+
+GLOBAL STATE (React context, separate from data context)
+  heroAccountId, enterpriseTier, capacityCeiling, capacityConsumed,
+  currentPlanVersion, claims[] with live status, decisionRecords[],
+  activePersonaId, simulationTime
+Mutations flow through a single reducer so the Connective Demo can reset cleanly.
+
+Build ONLY the shell, design system, routing, context and the account context
+strip in this step. Each module page should render its header plus a placeholder
+card reading "Module content — next step". Confirm the shell renders before
+continuing.
+
+JSON SHAPE
+{
+  meta: { demoName, version, heroAccountId, cycle },
+  brands: [{ id, name, modality, ta, line, launch_stage }],
+  functions: [{ id, name, persona, short, colour }],
+  accounts: [{ accountId, name, archetype, region, affiliatedHcpCount, idnParent,
+               payerMix, specialtyPharmacyAligned, formularyStatus,
+               functionScores{fnId:score}, functionRanks{fnId:rank},
+               enterpriseScore, enterpriseRank, enterpriseTier,
+               capacityCeilingPerMonth, capacityConsumedThisMonth, consent,
+               featureContributions[{feature, contribution}], rankSpread }],
+  policy: { policyVersion, hardConstraints[], tieBreakRules[], autonomyTiers[] },
+  claims: [{ claimId, accountId, functionId, brandId, title, objective, channel,
+             requestedWindow, durationMins, assertedValue, valueBasis,
+             prerequisiteFor[], dependsOn[], evidence[], contentApproved,
+             consentRequired }],
+  arbitration: { runId, capacityCeiling, decisions[{claimId, status, sequence,
+                 window, reasonCode, reason}], capacityAfter },
+  signals: [{ signalId, tOffsetSec, day, type, severity, headline, detail,
+              effect, narrative }],
+  planVersions: [{ version, createdAt, trigger, scheduled[], suppressed[],
+                   routed[], note }],
+  roleViews: [{ roleId, label, surface, sees[], hidden[], note }],
+  overrideScenario: {...}, tierChangeScenario: {...}, kpis: {...}
+}
+```
+
+---
+
+## PROMPT 1 — Module 1 · Shared Segmentation
+
+```
+Build the /segmentation page. Its job is to prove that five functions
+independently define "priority" differently, and that a single enterprise
+definition can reconcile them.
+
+The DISAGREEMENT is the hero visual, not the model output.
+
+SECTION A — "Five functions, five definitions of priority"
+Render five vertical ranked lists side by side, one per function from
+data.functions, each headed by the function short name and, in small muted
+text, what it optimises for:
+  Sales     — Rx potential, writer status
+  Brand     — competitive switch risk
+  Medical   — scientific influence
+  Access    — payer mix, fulfilment risk
+  Digital   — engagement propensity
+Each list shows the top 12 accounts by that function's rank, as compact rows:
+rank number (muted, serif), account name, score chip.
+Each column's top bar uses that function's colour.
+
+CRITICAL INTERACTION: hovering any account row highlights that SAME account in
+all five columns simultaneously, with a subtle amber outline, and draws thin
+connector lines between the highlighted rows across columns. This is the moment
+the demo lands — the reviewer sees one account sitting at wildly different ranks.
+Default the highlight to the hero account (meta.heroAccountId) on page load so
+the divergence is visible without interaction.
+
+Above the columns show a single stat line:
+  "Average rank spread across functions: X positions"  (compute from rankSpread)
+  and "Widest disagreement: <account name>, ranks N to M"
+
+SECTION B — "One enterprise definition"
+A single wide card. Left: the enterprise ranked list (top 12 by enterpriseRank),
+same row treatment, navy top bar. Right: for the currently highlighted account,
+show a horizontal stacked contribution bar built from featureContributions,
+labelled with each feature and its weight. Beneath it, a plain-language line:
+"Tier N · capacity ceiling M touches per month".
+
+Include a small "Model detail" disclosure link that expands to show the five
+feature weights and a one-line note: "Gradient-boosted ranker, monthly refresh,
+point-in-time correct features." Collapsed by default — a data science reviewer
+should be able to find it; an executive should not have to look at it.
+
+SECTION C — the handoff
+A slim footer band, amber, reading:
+"PUBLISHED AS A GOVERNED DATA PRODUCT → enterprise account tier + capacity
+ceiling consumed by the decision service"
+with a right-aligned button "Carry forward to plan →" routing to /plan.
+
+Human-in-the-loop detail: show a small badge on Section B reading
+"Tier boundaries require council approval — v1.4.0 approved 01 Sep".
+Do not present segmentation as fully autonomous.
+```
+
+---
+
+## PROMPT 2 — Module 2 · Living Plan
+
+```
+Build the /plan page. Its job is to prove the plan is maintained state that
+re-decides on incoming signals, not a monthly artefact.
+
+LAYOUT: two columns, 60/40.
+
+LEFT — "Current plan" (the artefact)
+A card titled with the hero account name and cycle. Inside, a table with columns:
+  SEQ · WHO ENGAGES · OBJECTIVE · WINDOW · STATUS
+Rows are claims joined from data.claims + live status. Row treatment:
+  - scheduled  → white row, teal left bar, sequence number shown in serif
+  - routed     → pale violet row, violet left bar, sequence shows "—",
+                 status text "ROUTED · FIREWALL TRACK"
+  - suppressed → pale warm row, red left bar, sequence "—", text at 85% opacity
+Beneath the table, a panel "Every line carries its reason" listing the reason
+for each non-scheduled line, referencing the rule id and its plain-English text
+from policy.tieBreakRules / hardConstraints.
+
+Above the table: a capacity meter — N of M touches used, as a segmented bar
+(one segment per available touch), plus a separate small marker for the
+firewalled track that is explicitly NOT counted against the commercial ceiling.
+
+RIGHT — "Signal feed" and controls
+A "Run month" button. On click, replay data.signals in tOffsetSec order,
+compressed into roughly 40 seconds. Each signal animates into the feed as a
+compact card: day label, type chip, headline, detail.
+Then, based on signal.effect:
+  - "replan"        → the left table reorders with a 250ms transition, the plan
+                      version counter increments, and a toast reads
+                      "Plan re-decided · v{n}" with signal.narrative beneath
+  - "no-change"     → the signal card gets a muted "Below re-decision threshold
+                      — plan holds" tag and NOTHING on the left moves.
+                      THIS IS IMPORTANT. It proves there is a decision threshold
+                      rather than reflexive churn. Do not skip it.
+  - "capacity-debit"→ the capacity meter debits one segment with a brief pulse
+  - "firewall-track"→ the routed row updates; commercial rows are untouched,
+                      with a small note "no effect on commercial sequence by design"
+
+VERSION HISTORY
+A horizontal version strip above the plan: v1 · v2 · v3, from data.planVersions.
+Clicking a version renders the plan AS AT that version, read-only, with a
+banner "Viewing v{n} — {trigger}" and a "Return to current" action. Scrubbing
+backwards must work. This is what separates a plan from a feed.
+
+ESCALATION
+When a re-decision would displace an already-scheduled claim, do not apply it
+silently. Show an inline amber bar: "Re-decision crosses a threshold — requires
+enterprise owner confirmation" with Confirm / Defer buttons. Confirm applies the
+change and writes a decision record. This keeps the autonomy story consistent.
+
+Speed control: 1x / 2x / instant. Provide a Reset that restores v1 cleanly.
+```
+
+---
+
+## PROMPT 3 — Module 3 · Arbitration
+
+```
+Build the /arbitration page. This is the centrepiece. Its job is to show the
+moment of decision: five claims, three slots, and a system that decides,
+suppresses and explains.
+
+Structure it as four sequential beats, advanced by a single primary button
+("Next" / "Run arbitration" / "Continue"). Only one beat is emphasised at a
+time; previous beats collapse to a compact summary row rather than disappearing.
+
+BEAT 1 — "Six claims arrived for this account"
+Render all claims for the hero account as cards in a 3x2 grid. Each card:
+  function chip (coloured) · brand · title · objective ·
+  requested window · asserted value as a prominent number ·
+  "why" line from valueBasis · evidence bullets (max 2) ·
+  dependency note if dependsOn is non-empty ("Requires: {claim title}")
+Every card must read as individually defensible. Do not visually rank them yet.
+Caption beneath: "Each of these is correct in isolation."
+
+BEAT 2 — "The ceiling"
+Dim the claim grid. Bring forward a single centred statement:
+  "Enterprise tier 2 · 3 commercial touches available this month"
+with the capacity meter showing 3 empty segments, and beneath it in muted text
+"Six claims. Three slots. Something has to lose."
+Let this beat be deliberately sparse. The arithmetic does the persuading.
+
+BEAT 3 — "Arbitration"
+Run the cascade visibly, applying data.policy in order:
+  (a) hard constraints evaluated as GATES — show each constraint id and name
+      passing or blocking, as a compact checklist that resolves over ~2 seconds
+  (b) tie-break rules applied in priority order — as each fires, the relevant
+      claim card animates to its resolved position
+Then settle into the resolved plan table (same visual language as /plan):
+  3 scheduled with sequence numbers, 1 routed to firewall track, 2 suppressed.
+EVERY resolved line must display its reasonCode badge (e.g. "TB-01") and the
+full plain-English reason from data.arbitration.decisions. The reason text is
+the most important content on this screen — give it room, do not truncate it,
+do not put it behind a tooltip.
+
+BEAT 4 — "Override"
+Show the enterprise owner control. Implement data.overrideScenario:
+reinstating CLM-4405 (Arvexa) must visibly DISPLACE CLM-4403, because the
+ceiling is fixed at 3. Require a free-text reason before the override commits —
+the button stays disabled until text is entered. Pre-fill a suggested reason
+from overrideScenario.exampleReason but allow editing.
+On commit:
+  - the table re-sequences
+  - the capacity ledger updates
+  - a Decision Record entry appears: record id, timestamp, policy version,
+    actor, action, reason, displaced claim
+Show the decision record in a right-hand panel that has been accumulating
+system decisions throughout beats 3 and 4, so the override appends to an
+existing audit trail rather than creating one.
+
+"WHY DID I LOSE?" VIEW
+On each suppressed row, a small link "Why did this lose?" opens a side panel
+showing: the winning claim, the rule that governed, the rule's rationale text,
+the capacity position at the time, and a "Contest for next cycle" button that
+logs an entry and shows a confirmation. This single panel does more for
+adoption credibility than anything else on the screen — build it properly.
+```
+
+---
+
+## PROMPT 4 — Role views and persona switching
+
+```
+Build the /roles page and wire up the persona switcher in the sidebar.
+
+PERSONA SWITCHER (sidebar footer)
+A compact control listing personas from data.roleViews:
+  Oncology Specialist · Reimbursement Specialist · Campaign Manager ·
+  Medical Science Liaison · Brand Lead · Enterprise Engagement Owner
+Selecting a persona sets activePersonaId globally.
+
+/roles PAGE — "One plan, many views"
+Show the selected persona's view of the SAME plan, rendered to resemble the
+surface that persona actually works in. Do not build six real UIs — build six
+credible, restrained simulations, each about 400px tall, framed in a simple
+device/window chrome with the surface name in the frame header:
+
+1. Oncology Specialist — "Veeva task list (simulated)"
+   A task row for their claim only: account, date, objective, and a
+   "what was already said" note. Must NOT show medical or other functions' claims.
+
+2. Reimbursement Specialist — "Case queue (simulated)"
+   Their claim as a case card, with the dependency made explicit:
+   "Blocking: detailing claim scheduled after this clears."
+
+3. Campaign Manager — "Campaign console (simulated)"
+   Send window, suppression flag, and a consent exclusion note
+   ("9 of 12 targets eligible — 3 excluded, consent not on file").
+
+4. Medical Science Liaison — "Medical platform (simulated)"
+   ONLY the firewalled claim. Add a visible banner:
+   "Commercial plan not visible — firewall enforced."
+   This must be genuinely enforced in the render, not merely stated.
+
+5. Brand Lead — "Brand claim outcomes"
+   A small table of this brand's claims with WON / LOST status, the governing
+   rule, and a contest action.
+
+6. Enterprise Engagement Owner — "Enterprise console"
+   The full plan, all statuses, trade-offs, override control and decision
+   record. Mark this view with a small amber badge: "The only new UI."
+
+Beneath the simulated surface, a single muted caption line from roleViews.note.
+Add a compact left rail listing all six personas so the reviewer can click
+through quickly without using the sidebar.
+```
+
+---
+
+## PROMPT 5 — Connective demo
+
+```
+Build the /connect page. This exists purely to prove the causal link between
+Module 1 and Module 3, and it is the closing move of the demo.
+
+Implement data.tierChangeScenario.
+
+LAYOUT: a single control at the top, two plan panels side by side beneath.
+
+CONTROL
+A segmented toggle: "Enterprise tier 2 (ceiling 3)" | "Enterprise tier 1 (ceiling 5)"
+with a one-line label above: "Change one upstream input. Change nothing else."
+
+PANELS
+Left panel, fixed: "Arbitration logic · unchanged" — render the five hard
+constraints and five tie-break rules as a static, visibly UNCHANGING list, with
+the policy version stamped at the top. It must be obvious that this panel never
+moves when the toggle flips.
+
+Right panel: the resolved plan, which DOES change when the toggle flips:
+  tier 2 → 3 scheduled, 2 suppressed (Arvexa and speaker invitation)
+  tier 1 → 5 scheduled, 0 suppressed
+Animate the transition: suppressed rows rise into the schedule, the capacity
+meter extends from 3 to 5 segments, sequence numbers recompute.
+
+Beneath, a closing statement in serif, large:
+"No arbitration logic changed. The upstream segmentation decision changed the
+downstream plan."
+
+KPI STRIP
+A thin strip at the bottom from data.kpis showing the four orchestration-era
+metrics — conflict rate, suppression rate, capacity utilisation, plan adherence
+— each with a small "not computable today" state for the before case and a
+value for the after case. Label the strip clearly:
+"Illustrative values — these metrics require a joint engagement identifier that
+does not exist in most landscapes today."
+Do not present these as measured results.
+```
+
+---
+
+## PROMPT 6 — Polish, restraint pass and QA
+
+```
+Final pass. Make no new features. Remove, tighten and verify.
+
+RESTRAINT PASS — actively look for and remove:
+- any gradient, glow, drop shadow or decorative background pattern
+- any emoji or decorative icon that does not carry information
+- any animation that is not communicating a state change
+- any screen element that does not serve the four-beat narrative
+- any placeholder or lorem text
+
+CONSISTENCY
+- Every card uses the same border, radius, padding and top-bar treatment.
+- Status colours are identical across /plan, /arbitration, /roles and /connect:
+  scheduled = teal, routed = violet, suppressed = red, pending = muted.
+- Reason codes render identically everywhere (badge + full text, never truncated).
+- The account context strip appears on every module page and reflects live state.
+
+NARRATIVE CHECK — click through this exact path and confirm it holds together:
+  /segmentation → hover hero account, see divergence, carry forward
+  /plan → run month, observe a re-decision AND a no-change signal, scrub versions
+  /arbitration → four beats, reason codes readable, override displaces a claim
+  /roles → switch to MSL, confirm commercial plan is genuinely not rendered
+  /connect → flip tier, confirm left panel does not move and right panel does
+The hero account, its tier and its capacity must remain consistent throughout.
+
+RESPONSIVENESS
+Optimise for 1440x900 and 1920x1080 presentation displays. Below 1280px,
+gracefully stack columns. Mobile is out of scope — do not spend effort there.
+
+DEMO SAFETY
+- A global Reset control in the sidebar footer restoring the opening state.
+- Deep links must work — a reviewer may open /arbitration directly.
+- No network calls. No console errors. No layout shift on load.
+- Every number rendered must trace to the JSON. Nothing invented in the UI.
+
+ACCESSIBILITY
+Minimum 4.5:1 contrast for body text. Status must never be conveyed by colour
+alone — always pair with a text label.
+```
+
+---
+
+## Notes for the build team
+
+**The dataset is the critical path, not the code.** Every number, reason string
+and rule in the app comes from `orchestration_demo_data.json`. To retarget the
+demo for a different client, edit brands, account names and claim text in that
+file. Nothing in the component tree should need to change.
+
+**The hero account is `ACC-1003` (Cedar Valley Health System).** It is
+deliberately constructed so the five functions disagree: access rank 4,
+medical rank 4, sales rank 10, digital rank 16. That divergence is what makes
+Module 1 land, and it is what makes the arbitration in Module 3 non-trivial.
+
+**Three things must not be cut under time pressure:** the reason codes on every
+suppressed line, the "no-change" signal in Module 2, and the tier toggle in the
+connective demo. Everything else is presentation; those three are the argument.
+
+**Closing line for the demo narration:** "The hard part isn't building this.
+It's agreeing what should win — and that's the conversation worth having first."
