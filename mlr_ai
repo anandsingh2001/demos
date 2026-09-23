@@ -1,8 +1,207 @@
 # Vibe-Coding Prompt Pack — MLR RuleOps Demo App
 
-**How to use:** paste **Prompt 1** into Google AI Studio / Lovable / v0 / Bolt / Cursor as a single message. Then use the follow-up prompts to refine. Prompt 1 is self-contained — it includes the data seed, the logic rules, and the non-negotiables.
+**Scope:** fully generic. No customer names, no real-world product or therapy-area branding. Products are `Product A / B / C / X`; therapy areas are generic (Cardiovascular, Respiratory, Oncology, Immunology, Infectious Diseases); all people are fictional.
+
+**How to use:**
+1. Run **Section 1** (Prompts D1–D5) to generate the synthetic dataset.
+2. Paste **Section 2 · Prompt 1** to build the app.
+3. Use **Prompts 2–6** to fix the failures these tools reliably produce.
 
 ---
+
+# SECTION 1 — Synthetic data generation prompts
+
+Run these first, in order. Each outputs a JSON file the app will consume. Use any LLM (AI Studio, ChatGPT, Claude) — these are data-generation prompts, not build prompts.
+
+## Prompt D1 — MLR rules catalog
+
+````
+Generate a synthetic MLR (Medical/Legal/Regulatory) rules catalog as a JSON array of ~30 rules.
+This is fake demo data for a software prototype. Do NOT use any real company, product, or brand
+names. Use generic placeholders only.
+
+DIMENSIONS
+- product: "Product A", "Product B", "Product C", "Product X", or "ALL"
+- therapyArea: Cardiovascular | Respiratory | Oncology | Immunology | Infectious Diseases | ALL
+- market: Global, US, UK, DE, FR, JP, BR, CA, LATAM (+ language code e.g. en-US, de-DE, ja-JP)
+- materialType: Promotional (HCP) | Promotional (Patient/DTC) | Scientific/Publication | ALL
+
+RULE HIERARCHY — produce a realistic spread across all five layers:
+- Universal (global, applies to everything) — about 3 rules
+- Market-Specific (one market, all products) — about 7 rules
+- Brand-Specific (one product, all markets) — about 6 rules
+- Market-Brand-Specific (one market + one product; most granular) — about 9 rules
+- Scientific-Accuracy (citation/statistics integrity) — about 4 rules
+Plus 1 rule with status "Deprecated" representing the PRIOR version of a Market-Brand rule,
+so a rollback can be demonstrated.
+
+EACH RULE OBJECT:
+{
+  "ruleId": "e.g. MB-US-PRODA-CV-014",
+  "layer": "Universal|Market-Specific|Brand-Specific|Market-Brand-Specific|Scientific-Accuracy",
+  "market": "...", "language": "...", "product": "...", "therapyArea": "...",
+  "materialType": "...",
+  "ruleClass": "text-string" or "business-logic",
+  "riskTier": "Low|Medium|High|Critical",
+  "status": "Active" or "Deprecated",
+  "version": "e.g. 5.2",
+  "lastUpdated": "YYYY-MM-DD",
+  "dependencies": ["ruleId", ...],
+  "description": "one line, prefixed [ILLUSTRATIVE]",
+  "content": "the actual text string, or null for logic rules",
+  "trigger": "pseudo-code boolean, or null for text rules,
+              e.g. IF market=='JP' AND materialType LIKE 'Promotional%' THEN route_to('JP-RA-Reviewer')",
+  "restrictedTerms": ["...", ...]
+}
+
+REQUIREMENTS
+- Mix text-string rules (disclaimers, PI hyperlinks, local contact details, adverse-event
+  statements) and business-logic rules (routing, dual-review requirements, blocking).
+- Include multilingual content for DE, FR, BR, JP rules.
+- Include restricted-term lists (e.g. "cure", "100% safe", "best-in-class", "side-effect-free").
+- Use placeholder URLs on example.com and fake registration numbers.
+- Clinical/efficacy values must be placeholders like "XX.X" — never invent real-looking figures.
+- Mark all content with [SYNTHETIC] or [ILLUSTRATIVE] so it can never be mistaken for real
+  regulatory text.
+
+DEMO-CRITICAL: include a rule with ruleId "MB-US-PRODA-CV-014" — a US Product A cardiovascular
+promotional disclaimer whose content cites "(Smith et al., 2020, CV-OUTCOMES)". Also create
+near-miss distractors: a Market-level US cardiovascular rule and a Brand-level global Product A
+rule, so a disambiguation demo has realistic competing candidates.
+
+Output valid JSON only.
+````
+
+## Prompt D2 — Mock tickets
+
+````
+Generate ~16 synthetic rule-change tickets as a JSON array, for a demo of AI-assisted MLR rule
+updates. Generic placeholders only — no real company, product or person names.
+
+EACH TICKET:
+{
+  "ticketId": "TKT-1001",
+  "source": "ServiceNow" | "Jira",
+  "submittedBy": "role-style fictional name, e.g. 'US Content Owner (M. Alvarez)'",
+  "priority": "Low|Medium|High",
+  "requestText": "plain-English request as a non-technical business user would write it",
+  "category": "Text String Update" | "Business Logic Change" | "Rollback Request" | "Ambiguous / Incomplete",
+  "expectedTargetRule": "ruleId, or 'AMBIGUOUS: ruleA vs ruleB' or 'NONE - insufficient info'",
+  "matchConfidence": 0.22 to 0.96,
+  "riskTier": "Low|Medium|High|Critical|Unknown",
+  "autonomyTier": "Assisted|Supervised|Escalated",
+  "hitlGate": "Gate1-IntentConfirm | Gate2-RuleMatch | Gate3-SingleApproval | Gate3-DualApproval | Gate3-Block",
+  "notes": "what this ticket demonstrates in the demo"
+}
+
+MUST COVER THESE SCENARIOS (one ticket each, minimum):
+1. GOLDEN PATH (TKT-1001): "Update the US cardiovascular disclaimer for Product A to include the
+   new 2026 clinical trial citation and remove reference to the 2020 study." → clean 96% match on
+   MB-US-PRODA-CV-014 → Low risk → single approval.
+2. DISAMBIGUATION: request names the product but NOT the market, so 3 rules across different
+   layers match → confidence ~62% → Gate2.
+3. BUSINESS-LOGIC / CRITICAL: "if Product X is mentioned in Japan promotional material, require
+   both RA and Scientific reviewer sign-off" → Critical → dual approval + RMCB reference.
+4. GUARDRAIL BLOCK: asks to soften or weaken an approved safety warning → refused, escalated.
+5. RESTRICTED TERM: asks to add a prohibited claim phrase as approved language → blocked.
+6. ROLLBACK: asks to restore the previous version of a rule.
+7. VERY LOW CONFIDENCE: vague ticket like "Please fix the disclaimer, it's wrong." → ~22% →
+   Gate1 clarifying questions.
+8. MULTILINGUAL: at least 3 tickets written in German, Portuguese and French.
+9. MARKET-WIDE BLAST RADIUS: a PI hyperlink change affecting all products in one market.
+
+Output valid JSON only.
+````
+
+## Prompt D3 — Content corpus (regression test set)
+
+````
+Generate ~15 synthetic content assets as a JSON array. These represent previously-reviewed
+promotional/scientific materials that get re-scored whenever an MLR rule changes — the
+regression test set. Generic placeholders only.
+
+EACH ASSET:
+{
+  "contentId": "CNT-001",
+  "market": "US|DE|JP|BR|UK|FR|LATAM",
+  "product": "Product A|B|C|X",
+  "therapyArea": "...",
+  "materialType": "...",
+  "bodyExcerpt": "one short line of the asset's text",
+  "currentResult": "PASS" | "FAIL",
+  "governingRules": ["ruleId", ...],
+  "failReason": "why it fails, or null"
+}
+
+DEMO-CRITICAL REQUIREMENT:
+Include exactly one asset (CNT-003) that currently FAILS *because* it references a 2026 citation
+that is not yet present in the active rule. After the golden-path ticket is applied, this asset
+must flip to PASS. Set its failReason to:
+"References 2026 citation not yet in active rule (expected to PASS after TKT-1001)."
+
+Also include:
+- Several stable PASS assets that must remain unchanged (proving no collateral damage).
+- 2-3 assets failing for UNRELATED reasons (restricted term, superlative claim, unverified
+  statistic) that must stay FAIL — proving the change is surgical.
+- At least one asset in a different market (DE) governed by a different rule, to prove the
+  change did not leak across markets.
+
+Output valid JSON only.
+````
+
+## Prompt D4 — Approvers / RBAC directory
+
+````
+Generate a JSON array of 6 fictional approver personas that drive human-in-the-loop routing in
+an MLR rule-change system. Invented names only — must not resemble real people.
+
+EACH APPROVER:
+{
+  "userId": "APR-001",
+  "name": "fictional full name",
+  "role": "MLR-Admin | Scientific-Reviewer | Market-Reviewer | Regional-RA-Reviewer | RMCB-Oversight | Affiliate-Localizer",
+  "scope": "Global | US | DE | JP | LATAM ...",
+  "products": "ALL or a list",
+  "canApproveRisk": ["Low","Medium","High","Critical"] subset,
+  "dualSignoffRequiredFor": ["Critical"] or similar
+}
+
+Ensure the set supports: a global MLR Admin who can single-approve up to High; a Scientific
+Reviewer required for Critical scientific claims; a regional reviewer limited to their market;
+and an oversight committee entry for the highest-risk escalations.
+
+Output valid JSON only.
+````
+
+## Prompt D5 — Autonomy / HITL policy matrix
+
+````
+Generate a JSON array defining the governance logic that maps risk to autonomy to human gate,
+for an AI-assisted MLR rule-change system.
+
+EACH ROW:
+{
+  "riskTier": "Low|Medium|High|Critical|Unknown",
+  "autonomyTier": "Assisted|Supervised|Escalated",
+  "hitlGate": "which gate applies",
+  "approverRole": "who must sign",
+  "autoDeployRule": "when deployment is permitted",
+  "exampleTicket": "TKT-xxxx"
+}
+
+Required logic:
+- Low      → Assisted   → single approval → deploy after 1 approval
+- Medium   → Assisted   → single approval + rationale
+- High     → Supervised → approval + impact report + regression pass
+- Critical → Escalated  → DUAL approval + oversight reference → never auto-deploy
+- Unknown/low-confidence → Supervised → clarification gate → blocked until clarified
+
+Output valid JSON only.
+````
+
+---
+
+# SECTION 2 — Application build prompts
 
 ## PROMPT 1 — Master build prompt (paste this first)
 
@@ -11,12 +210,17 @@ Build a single-page web application called "MLR RuleOps" — a demo of an AI-ass
 change-management platform for a pharmaceutical MLR (Medical/Legal/Regulatory) rules engine.
 
 ## CONTEXT
-Pharma companies run an "AI Assisted Review" gate that checks promotional content against
+Life-sciences companies run an "AI Assisted Review" gate that checks promotional content against
 compliance rules before formal MLR review. Business users file tickets asking to change those
 rules (e.g. "update the US cardiovascular disclaimer to cite the 2026 trial and drop the 2020
 study"). Today admins do this by hand and it takes 20-36 days. This app shows AI parsing the
 ticket, finding the right rule, drafting the change, regression-testing it, and STOPPING for
 human approval before deploying.
+
+## NAMING — IMPORTANT
+Use ONLY generic placeholders. Products are "Product A", "Product B", "Product C", "Product X".
+Therapy areas are generic (Cardiovascular, Respiratory, Oncology, Immunology, Infectious
+Diseases). All people are fictional. Do not reference any real company or brand anywhere.
 
 ## TECH
 - React + TypeScript + Tailwind CSS. Single-page app with client-side routing.
@@ -34,7 +238,7 @@ Left sidebar nav with only: Tickets · Change Workspace · Approvals · Audit.
 Footer on every screen: "Illustrative / synthetic data — not real regulatory content".
 
 ### SCREEN 1 — Ticket Queue
-Table of tickets: Ticket ID, Source, Title, Market, Brand, Change Type, Risk (coloured chip:
+Table of tickets: Ticket ID, Source, Title, Market, Product, Change Type, Risk (coloured chip:
 LOW green / MEDIUM amber / HIGH red / CRITICAL dark red), Stage, Age.
 Search box + Stage filter + Risk filter. Clicking a row opens /workspace/:ticketId.
 Include a "Reset demo" button that returns all tickets to stage RECEIVED.
@@ -45,14 +249,14 @@ When clicked, reveal four panels IN SEQUENCE with ~600ms delay between each:
 
 Panel A "Original request" — the raw ticket text + requester + priority.
 
-Panel B "AI interpretation" — a small table: Intent, Market, Brand, Category, and a large
+Panel B "AI interpretation" — a small table: Intent, Market, Product, Category, and a large
 confidence percentage (e.g. 98%).
 
 Panel C "Rule discovery & disambiguation" — THE MOST IMPORTANT PANEL.
 Show a table of AT LEAST 3 candidate rules with columns: Rule ID, Layer, Scope, Match %,
 Status. Exactly one row is highlighted and labelled SELECTED; the others are labelled
 "overridden" or "less specific". Below the table show a reasoning box:
-"Why this rule: exact US market + Drug A brand + Cardiovascular + Disclaimer match.
+"Why this rule: exact US market + Product A + Cardiovascular + Disclaimer match.
 Market-level rule overridden by the more specific Market-Brand rule."
 NEVER show only a single matched rule — always show the candidates it rejected.
 
@@ -68,7 +272,7 @@ Footer button: "Run validation & tests →" which reveals Screen 3 content below
 Row of 5 stat cards: Assets affected 34 | Reviews replayed 48 | Unchanged 46 |
 Changed as expected 2 | Broken 0 (render "Broken 0" in green, large).
 
-Then a "Regression detail" table: Asset, Market/Brand, Before, After, Note.
+Then a "Regression detail" table: Asset, Market/Product, Before, After, Note.
 CRITICAL: one row (CNT-003) must show Before=FAIL → After=PASS, highlighted, with the note
 "Now passes — 2026 citation is live". This proves the change is correct, not just valid.
 Other rows stay PASS→PASS unchanged.
@@ -92,7 +296,7 @@ Cards: "Change summary" (rule, version v4→v5, risk chip, test result, requeste
 "Audit trail (append-only)" table: Time, Actor, Action, Detail. Rows:
 TICKET_RECEIVED (system) → INTENT_PARSED (AI, conf 98%) → RULE_SELECTED (AI, 2 candidates
 rejected) → REGRESSION_PASSED (48 replayed, 0 broken). After the user clicks Approve, APPEND
-two new rows live: APPROVED (Priya Shah, with her typed rationale) and DEPLOYED (system,
+two new rows live: APPROVED (the admin, with the typed rationale) and DEPLOYED (system,
 v4 → v5). Never delete rows.
 Include a "↺ Rollback to v4" button that appends a ROLLED_BACK audit row.
 
@@ -102,8 +306,8 @@ each other, show an amber banner "⚠ Ambiguous request — market not specified
 user to click "select" on one of the candidate rules before the pipeline continues.
 
 State B — Critical dual approval: if riskTier is CRITICAL, the approval screen shows TWO
-approver rows (Dr. M. Reid / Scientific — PENDING, and Priya Shah / MLR Admin — SIGNED), a
-reference to "RMCB-SOP-114", and the deploy button is DISABLED and reads
+approver rows (a Scientific Reviewer — PENDING, and the MLR Admin — SIGNED), a reference to
+"RMCB-SOP-114", and the deploy button is DISABLED and reads
 "Deploy — blocked (1 of 2 signed)".
 
 State C — Guardrail block: if the request targets a safety/ISI field AND the intent is to
@@ -117,31 +321,31 @@ HIGH     = restricted term or claim wording                      → Approval + 
 CRITICAL = business-logic/routing change or scientific value     → Dual approval + RMCB, deploy blocked
 
 ## SEED DATA (use exactly these tickets)
-TKT-1001 | ServiceNow | "Update the US cardiovascular disclaimer for Drug A to include the new
-  2026 clinical trial citation and remove reference to the 2020 study." | US | Drug A |
-  Text string | LOW | confidence 98% | target RULE-US-DRUGA-CV-014
-TKT-1006 | Jira | "Add a routing rule: if Drug X is mentioned in Japan promotional material,
-  require both RA and Scientific reviewer sign-off." | JP | Drug X | Business logic | CRITICAL
+TKT-1001 | ServiceNow | "Update the US cardiovascular disclaimer for Product A to include the
+  new 2026 clinical trial citation and remove reference to the 2020 study." | US | Product A |
+  Text string | LOW | confidence 98% | target RULE-US-PRODA-CV-014
+TKT-1006 | Jira | "Add a routing rule: if Product X is mentioned in Japan promotional material,
+  require both RA and Scientific reviewer sign-off." | JP | Product X | Business logic | CRITICAL
 TKT-1009 | Jira | "Reword the US patient safety statement to soften the ocular adverse-reaction
-  warning tone." | US | Drug B | Text string | HIGH | → triggers guardrail block
-TKT-1004 | ServiceNow | "Update the disclaimer to add the 2026 citation." | — | Drug A |
+  warning tone." | US | Product B | Text string | HIGH | → triggers guardrail block
+TKT-1004 | ServiceNow | "Update the disclaimer to add the 2026 citation." | — | Product A |
   Text string | MEDIUM | confidence 62% | → triggers disambiguation gate
 TKT-1016 | ServiceNow | "Roll back the US disclaimer to the version before the 2026 citation
-  change." | US | Drug A | Rollback | MEDIUM
+  change." | US | Product A | Rollback | MEDIUM
 
 Candidate rules for TKT-1001:
-  RULE-US-DRUGA-CV-014 | Market-Brand | US · Drug A · Cardiovascular | 98% | SELECTED
-  RULE-US-CV-002       | Market       | US · all brands              | 71% | overridden
-  RULE-DRUGA-BASE-007  | Brand        | Global · Drug A              | 64% | less specific
+  RULE-US-PRODA-CV-014 | Market-Brand | US · Product A · Cardiovascular | 98% | SELECTED
+  RULE-US-CV-002       | Market       | US · all products               | 71% | overridden
+  RULE-PRODA-BASE-007  | Brand        | Global · Product A              | 64% | less specific
 
-Rule content before: "Drug A is indicated to reduce cardiovascular risk in appropriate adults.
+Rule content before: "Product A is indicated to reduce cardiovascular risk in appropriate adults.
 (Smith et al., 2020, CV-OUTCOMES) Please see full Prescribing Information."
 Rule content after: same sentence but "(Smith et al., 2020, CV-OUTCOMES)" removed and
 "(Johnson et al., 2026, CV-OUTCOMES-2)" added.
 
-Regression assets: CNT-003 (US/Drug A) FAIL→PASS [highlight]; CNT-001 (US/Drug A) PASS→PASS;
-CNT-004 (DE/Drug A) PASS→PASS "DE rule untouched"; CNT-013 (US/Drug A) FAIL→FAIL "unrelated
-superlative claim".
+Regression assets: CNT-003 (US/Product A) FAIL→PASS [highlight]; CNT-001 (US/Product A)
+PASS→PASS; CNT-004 (DE/Product A) PASS→PASS "DE rule untouched"; CNT-013 (US/Product A)
+FAIL→FAIL "unrelated superlative claim".
 
 ## NON-NEGOTIABLES
 1. The pipeline MUST halt at AWAITING_APPROVAL. Never auto-deploy. Never show the golden
@@ -153,12 +357,11 @@ superlative claim".
 6. Audit is append-only and updates live when the user approves.
 7. Synthetic-data disclaimer visible on every screen.
 8. Keep it to 4 screens — no settings, analytics, or admin pages.
+9. Generic naming only — no real company or brand references.
 
-Make it look like enterprise software a pharma compliance team would trust: calm, dense but
+Make it look like enterprise software a compliance team would trust: calm, dense but
 uncluttered, generous whitespace, no gradients, no emoji except the small status glyphs above.
 ````
-
----
 
 ## PROMPT 2 — If the pipeline auto-completes (most common failure)
 
@@ -214,6 +417,7 @@ the reveal manually instead of relying on timers).
 ---
 
 ## Quick QA checklist before the demo
+- [ ] No real company, product or brand name appears anywhere in the UI or data
 - [ ] On load, TKT-1001 shows stage **RECEIVED** (not closed)
 - [ ] Panel C shows **3 candidates** with match %
 - [ ] Diff reads as a **sentence**, not tokens
