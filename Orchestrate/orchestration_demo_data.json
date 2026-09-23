@@ -1,0 +1,2124 @@
+{
+  "meta": {
+    "demoName": "Enterprise Engagement Orchestration \u2014 Demo Dataset",
+    "version": "1.0.0",
+    "note": "Fully synthetic. Brands, accounts and people are fictional and not drawn from any real organisation.",
+    "heroAccountId": "ACC-1003",
+    "cycle": "2026-09"
+  },
+  "brands": [
+    {
+      "id": "BRD-A",
+      "name": "Velaxan",
+      "modality": "IV infusion",
+      "ta": "Oncology",
+      "line": "1L",
+      "launch_stage": "Growth"
+    },
+    {
+      "id": "BRD-B",
+      "name": "Netrivo",
+      "modality": "Oral",
+      "ta": "Oncology",
+      "line": "1L combination partner",
+      "launch_stage": "Growth"
+    },
+    {
+      "id": "BRD-C",
+      "name": "Arvexa",
+      "modality": "Subcutaneous",
+      "ta": "Immunology",
+      "line": "2L",
+      "launch_stage": "Mature"
+    }
+  ],
+  "functions": [
+    {
+      "id": "FN-SALES",
+      "name": "Sales / Field",
+      "persona": "Oncology Specialist",
+      "short": "Sales",
+      "colour": "teal"
+    },
+    {
+      "id": "FN-ACCESS",
+      "name": "Field Reimbursement",
+      "persona": "Reimbursement Specialist",
+      "short": "Access",
+      "colour": "rust"
+    },
+    {
+      "id": "FN-MEDICAL",
+      "name": "Medical Affairs",
+      "persona": "Medical Science Liaison",
+      "short": "Medical",
+      "colour": "violet"
+    },
+    {
+      "id": "FN-DIGITAL",
+      "name": "Digital / Omnichannel",
+      "persona": "Campaign Manager",
+      "short": "Digital",
+      "colour": "indigo"
+    },
+    {
+      "id": "FN-BRAND",
+      "name": "Brand Marketing",
+      "persona": "Brand Lead",
+      "short": "Brand",
+      "colour": "slate"
+    }
+  ],
+  "accounts": [
+    {
+      "accountId": "ACC-1001",
+      "name": "Ridgeline Cancer Institute",
+      "archetype": "Academic Medical Centre",
+      "region": "Northeast",
+      "affiliatedHcpCount": 24,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.51,
+        "medicare": 0.44,
+        "medicaid": 0.09
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 99,
+        "FN-BRAND": 5.9,
+        "FN-MEDICAL": 77.7,
+        "FN-ACCESS": 66.4,
+        "FN-DIGITAL": 21.8
+      },
+      "enterpriseScore": 60.9,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.297
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.011
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.124
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.146
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.031
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 1,
+        "FN-ACCESS": 13,
+        "FN-MEDICAL": 8,
+        "FN-DIGITAL": 20,
+        "FN-BRAND": 24
+      },
+      "enterpriseRank": 9,
+      "rankSpread": 23
+    },
+    {
+      "accountId": "ACC-1002",
+      "name": "Bay Harbour Oncology Group",
+      "archetype": "Community Oncology Network",
+      "region": "Southeast",
+      "affiliatedHcpCount": 31,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.62,
+        "medicare": 0.35,
+        "medicaid": 0.19
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Preferred",
+      "functionScores": {
+        "FN-SALES": 49.2,
+        "FN-BRAND": 58.0,
+        "FN-MEDICAL": 74.1,
+        "FN-ACCESS": 62.2,
+        "FN-DIGITAL": 55.5
+      },
+      "enterpriseScore": 58.5,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.147
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.104
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.119
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.137
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.078
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 20,
+        "FN-ACCESS": 14,
+        "FN-MEDICAL": 9,
+        "FN-DIGITAL": 8,
+        "FN-BRAND": 2
+      },
+      "enterpriseRank": 10,
+      "rankSpread": 18
+    },
+    {
+      "accountId": "ACC-1003",
+      "name": "Cedar Valley Health System",
+      "archetype": "Integrated Delivery Network",
+      "region": "Midwest",
+      "affiliatedHcpCount": 34,
+      "idnParent": "Cedar Valley Health",
+      "payerMix": {
+        "commercial": 0.44,
+        "medicare": 0.41,
+        "medicaid": 0.15
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Prior authorisation",
+      "functionScores": {
+        "FN-SALES": 74.0,
+        "FN-BRAND": 46.0,
+        "FN-MEDICAL": 88.0,
+        "FN-ACCESS": 91.0,
+        "FN-DIGITAL": 29.0
+      },
+      "enterpriseScore": 68.6,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.222
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.083
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.141
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.2
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.041
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 10,
+        "FN-ACCESS": 4,
+        "FN-MEDICAL": 4,
+        "FN-DIGITAL": 16,
+        "FN-BRAND": 9
+      },
+      "enterpriseRank": 6,
+      "rankSpread": 12
+    },
+    {
+      "accountId": "ACC-1004",
+      "name": "Northgate Medical Centre",
+      "archetype": "Independent Practice",
+      "region": "West",
+      "affiliatedHcpCount": 41,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.49,
+        "medicare": 0.39,
+        "medicaid": 0.2
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Prior authorisation",
+      "functionScores": {
+        "FN-SALES": 39.2,
+        "FN-BRAND": 39.9,
+        "FN-MEDICAL": 83.9,
+        "FN-ACCESS": 20.9,
+        "FN-DIGITAL": 31.7
+      },
+      "enterpriseScore": 41.4,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.118
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.072
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.134
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.046
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.044
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 22,
+        "FN-ACCESS": 21,
+        "FN-MEDICAL": 6,
+        "FN-DIGITAL": 14,
+        "FN-BRAND": 13
+      },
+      "enterpriseRank": 22,
+      "rankSpread": 16
+    },
+    {
+      "accountId": "ACC-1005",
+      "name": "Stonebridge Cancer Partners",
+      "archetype": "Academic Medical Centre",
+      "region": "Southwest",
+      "affiliatedHcpCount": 29,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.47,
+        "medicare": 0.42,
+        "medicaid": 0.07
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 52.9,
+        "FN-BRAND": 23.0,
+        "FN-MEDICAL": 63.7,
+        "FN-ACCESS": 91.1,
+        "FN-DIGITAL": 9.4
+      },
+      "enterpriseScore": 51.6,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.159
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.041
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.102
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.201
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.013
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 16,
+        "FN-ACCESS": 3,
+        "FN-MEDICAL": 14,
+        "FN-DIGITAL": 23,
+        "FN-BRAND": 19
+      },
+      "enterpriseRank": 16,
+      "rankSpread": 20
+    },
+    {
+      "accountId": "ACC-1006",
+      "name": "Lakeshore Specialty Network",
+      "archetype": "Community Oncology Network",
+      "region": "Northeast",
+      "affiliatedHcpCount": 48,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.36,
+        "medicare": 0.31,
+        "medicaid": 0.22
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 61.7,
+        "FN-BRAND": 32.8,
+        "FN-MEDICAL": 61.1,
+        "FN-ACCESS": 72.1,
+        "FN-DIGITAL": 60.4
+      },
+      "enterpriseScore": 58.5,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.185
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.059
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.098
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.159
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.084
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 14,
+        "FN-ACCESS": 10,
+        "FN-MEDICAL": 16,
+        "FN-DIGITAL": 7,
+        "FN-BRAND": 16
+      },
+      "enterpriseRank": 11,
+      "rankSpread": 9
+    },
+    {
+      "accountId": "ACC-1007",
+      "name": "Fairmont Regional Health",
+      "archetype": "Integrated Delivery Network",
+      "region": "Southeast",
+      "affiliatedHcpCount": 20,
+      "idnParent": "Fairmont Health",
+      "payerMix": {
+        "commercial": 0.39,
+        "medicare": 0.21,
+        "medicaid": 0.13
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Prior authorisation",
+      "functionScores": {
+        "FN-SALES": 72.6,
+        "FN-BRAND": 26.6,
+        "FN-MEDICAL": 42.3,
+        "FN-ACCESS": 61.2,
+        "FN-DIGITAL": 48.2
+      },
+      "enterpriseScore": 53.5,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.218
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.048
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.068
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.135
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.068
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 11,
+        "FN-ACCESS": 15,
+        "FN-MEDICAL": 23,
+        "FN-DIGITAL": 9,
+        "FN-BRAND": 18
+      },
+      "enterpriseRank": 13,
+      "rankSpread": 14
+    },
+    {
+      "accountId": "ACC-1008",
+      "name": "Copper Creek Oncology",
+      "archetype": "Independent Practice",
+      "region": "Midwest",
+      "affiliatedHcpCount": 49,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.38,
+        "medicare": 0.27,
+        "medicaid": 0.09
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Non-preferred",
+      "functionScores": {
+        "FN-SALES": 80.5,
+        "FN-BRAND": 52.3,
+        "FN-MEDICAL": 50.3,
+        "FN-ACCESS": 81.9,
+        "FN-DIGITAL": 33.6
+      },
+      "enterpriseScore": 64.3,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.242
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.094
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.08
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.18
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.047
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 8,
+        "FN-ACCESS": 8,
+        "FN-MEDICAL": 21,
+        "FN-DIGITAL": 13,
+        "FN-BRAND": 4
+      },
+      "enterpriseRank": 8,
+      "rankSpread": 17
+    },
+    {
+      "accountId": "ACC-1009",
+      "name": "Westfield Academic Centre",
+      "archetype": "Academic Medical Centre",
+      "region": "West",
+      "affiliatedHcpCount": 36,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.63,
+        "medicare": 0.43,
+        "medicaid": 0.19
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Non-preferred",
+      "functionScores": {
+        "FN-SALES": 86.4,
+        "FN-BRAND": 43.5,
+        "FN-MEDICAL": 65.7,
+        "FN-ACCESS": 70.8,
+        "FN-DIGITAL": 71.4
+      },
+      "enterpriseScore": 69.8,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.259
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.078
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.105
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.156
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.1
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 7,
+        "FN-ACCESS": 11,
+        "FN-MEDICAL": 12,
+        "FN-DIGITAL": 4,
+        "FN-BRAND": 11
+      },
+      "enterpriseRank": 4,
+      "rankSpread": 8
+    },
+    {
+      "accountId": "ACC-1010",
+      "name": "Harbour Point Cancer Care",
+      "archetype": "Community Oncology Network",
+      "region": "Southwest",
+      "affiliatedHcpCount": 54,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.59,
+        "medicare": 0.43,
+        "medicaid": 0.16
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Preferred",
+      "functionScores": {
+        "FN-SALES": 52.8,
+        "FN-BRAND": 89.8,
+        "FN-MEDICAL": 72.9,
+        "FN-ACCESS": 14.7,
+        "FN-DIGITAL": 38.9
+      },
+      "enterpriseScore": 52.3,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.158
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.162
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.117
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.032
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.054
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 17,
+        "FN-ACCESS": 22,
+        "FN-MEDICAL": 10,
+        "FN-DIGITAL": 11,
+        "FN-BRAND": 1
+      },
+      "enterpriseRank": 15,
+      "rankSpread": 21
+    },
+    {
+      "accountId": "ACC-1011",
+      "name": "Elmwood Health Alliance",
+      "archetype": "Integrated Delivery Network",
+      "region": "Northeast",
+      "affiliatedHcpCount": 48,
+      "idnParent": "Elmwood Health",
+      "payerMix": {
+        "commercial": 0.6,
+        "medicare": 0.39,
+        "medicaid": 0.06
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Prior authorisation",
+      "functionScores": {
+        "FN-SALES": 90.6,
+        "FN-BRAND": 21.1,
+        "FN-MEDICAL": 90.9,
+        "FN-ACCESS": 90.6,
+        "FN-DIGITAL": 15.4
+      },
+      "enterpriseScore": 67.6,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.272
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.038
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.145
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.199
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.022
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 5,
+        "FN-ACCESS": 5,
+        "FN-MEDICAL": 2,
+        "FN-DIGITAL": 22,
+        "FN-BRAND": 21
+      },
+      "enterpriseRank": 7,
+      "rankSpread": 20
+    },
+    {
+      "accountId": "ACC-1012",
+      "name": "Granite Bay Oncology",
+      "archetype": "Independent Practice",
+      "region": "Southeast",
+      "affiliatedHcpCount": 58,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.55,
+        "medicare": 0.34,
+        "medicaid": 0.19
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 41.2,
+        "FN-BRAND": 28.1,
+        "FN-MEDICAL": 48.2,
+        "FN-ACCESS": 43.5,
+        "FN-DIGITAL": 35.4
+      },
+      "enterpriseScore": 39.7,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.124
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.051
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.077
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.096
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.05
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 21,
+        "FN-ACCESS": 17,
+        "FN-MEDICAL": 22,
+        "FN-DIGITAL": 12,
+        "FN-BRAND": 17
+      },
+      "enterpriseRank": 23,
+      "rankSpread": 10
+    },
+    {
+      "accountId": "ACC-1013",
+      "name": "Silverton Medical Group",
+      "archetype": "Academic Medical Centre",
+      "region": "Midwest",
+      "affiliatedHcpCount": 42,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.46,
+        "medicare": 0.24,
+        "medicaid": 0.21
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 67.2,
+        "FN-BRAND": 50.7,
+        "FN-MEDICAL": 87.0,
+        "FN-ACCESS": 69.5,
+        "FN-DIGITAL": 75.8
+      },
+      "enterpriseScore": 69.1,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.202
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.091
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.139
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.153
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.106
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 12,
+        "FN-ACCESS": 12,
+        "FN-MEDICAL": 5,
+        "FN-DIGITAL": 2,
+        "FN-BRAND": 8
+      },
+      "enterpriseRank": 5,
+      "rankSpread": 10
+    },
+    {
+      "accountId": "ACC-1014",
+      "name": "Brookfield Cancer Centre",
+      "archetype": "Community Oncology Network",
+      "region": "West",
+      "affiliatedHcpCount": 53,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.34,
+        "medicare": 0.42,
+        "medicaid": 0.11
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 80.2,
+        "FN-BRAND": 19.3,
+        "FN-MEDICAL": 64.7,
+        "FN-ACCESS": 39.9,
+        "FN-DIGITAL": 16.3
+      },
+      "enterpriseScore": 48.9,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.241
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.035
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.103
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.088
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.023
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 9,
+        "FN-ACCESS": 18,
+        "FN-MEDICAL": 13,
+        "FN-DIGITAL": 21,
+        "FN-BRAND": 22
+      },
+      "enterpriseRank": 18,
+      "rankSpread": 13
+    },
+    {
+      "accountId": "ACC-1015",
+      "name": "Pinehurst Health Network",
+      "archetype": "Integrated Delivery Network",
+      "region": "Southwest",
+      "affiliatedHcpCount": 11,
+      "idnParent": "Pinehurst Health",
+      "payerMix": {
+        "commercial": 0.67,
+        "medicare": 0.29,
+        "medicaid": 0.1
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Non-preferred",
+      "functionScores": {
+        "FN-SALES": 94.8,
+        "FN-BRAND": 33.6,
+        "FN-MEDICAL": 71.5,
+        "FN-ACCESS": 8.6,
+        "FN-DIGITAL": 5.4
+      },
+      "enterpriseScore": 48.6,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.284
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.06
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.114
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.019
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.008
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 3,
+        "FN-ACCESS": 23,
+        "FN-MEDICAL": 11,
+        "FN-DIGITAL": 24,
+        "FN-BRAND": 15
+      },
+      "enterpriseRank": 19,
+      "rankSpread": 21
+    },
+    {
+      "accountId": "ACC-1016",
+      "name": "Aurora Ridge Oncology",
+      "archetype": "Independent Practice",
+      "region": "Northeast",
+      "affiliatedHcpCount": 36,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.57,
+        "medicare": 0.45,
+        "medicaid": 0.18
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 90.7,
+        "FN-BRAND": 12.0,
+        "FN-MEDICAL": 90.9,
+        "FN-ACCESS": 88.7,
+        "FN-DIGITAL": 75.7
+      },
+      "enterpriseScore": 74.0,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.272
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.022
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.145
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.195
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.106
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 4,
+        "FN-ACCESS": 7,
+        "FN-MEDICAL": 3,
+        "FN-DIGITAL": 3,
+        "FN-BRAND": 23
+      },
+      "enterpriseRank": 2,
+      "rankSpread": 20
+    },
+    {
+      "accountId": "ACC-1017",
+      "name": "Kingsway Specialty Care",
+      "archetype": "Academic Medical Centre",
+      "region": "Southeast",
+      "affiliatedHcpCount": 55,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.44,
+        "medicare": 0.35,
+        "medicaid": 0.13
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 99,
+        "FN-BRAND": 22.8,
+        "FN-MEDICAL": 63.6,
+        "FN-ACCESS": 90.0,
+        "FN-DIGITAL": 64.9
+      },
+      "enterpriseScore": 72.9,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.297
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.041
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.102
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.198
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.091
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 2,
+        "FN-ACCESS": 6,
+        "FN-MEDICAL": 15,
+        "FN-DIGITAL": 6,
+        "FN-BRAND": 20
+      },
+      "enterpriseRank": 3,
+      "rankSpread": 18
+    },
+    {
+      "accountId": "ACC-1018",
+      "name": "Meridian Cancer Institute",
+      "archetype": "Community Oncology Network",
+      "region": "Midwest",
+      "affiliatedHcpCount": 44,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.58,
+        "medicare": 0.44,
+        "medicaid": 0.14
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 29.9,
+        "FN-BRAND": 51.9,
+        "FN-MEDICAL": 32.8,
+        "FN-ACCESS": 6.2,
+        "FN-DIGITAL": 42.0
+      },
+      "enterpriseScore": 30.8,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.09
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.093
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.052
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.014
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.059
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 23,
+        "FN-ACCESS": 24,
+        "FN-MEDICAL": 24,
+        "FN-DIGITAL": 10,
+        "FN-BRAND": 5
+      },
+      "enterpriseRank": 24,
+      "rankSpread": 19
+    },
+    {
+      "accountId": "ACC-1019",
+      "name": "Ashford Community Oncology",
+      "archetype": "Integrated Delivery Network",
+      "region": "West",
+      "affiliatedHcpCount": 37,
+      "idnParent": "Ashford Health",
+      "payerMix": {
+        "commercial": 0.62,
+        "medicare": 0.24,
+        "medicaid": 0.13
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Preferred",
+      "functionScores": {
+        "FN-SALES": 19.5,
+        "FN-BRAND": 51.3,
+        "FN-MEDICAL": 54.2,
+        "FN-ACCESS": 91.7,
+        "FN-DIGITAL": 86.6
+      },
+      "enterpriseScore": 56.0,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.058
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.092
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.087
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.202
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.121
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 24,
+        "FN-ACCESS": 1,
+        "FN-MEDICAL": 19,
+        "FN-DIGITAL": 1,
+        "FN-BRAND": 6
+      },
+      "enterpriseRank": 12,
+      "rankSpread": 23
+    },
+    {
+      "accountId": "ACC-1020",
+      "name": "Oakmont Health Partners",
+      "archetype": "Independent Practice",
+      "region": "Southwest",
+      "affiliatedHcpCount": 43,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.61,
+        "medicare": 0.31,
+        "medicaid": 0.09
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Non-preferred",
+      "functionScores": {
+        "FN-SALES": 65.9,
+        "FN-BRAND": 50.8,
+        "FN-MEDICAL": 82.0,
+        "FN-ACCESS": 24.0,
+        "FN-DIGITAL": 22.8
+      },
+      "enterpriseScore": 50.5,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.198
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.091
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.131
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.053
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.032
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 13,
+        "FN-ACCESS": 20,
+        "FN-MEDICAL": 7,
+        "FN-DIGITAL": 18,
+        "FN-BRAND": 7
+      },
+      "enterpriseRank": 17,
+      "rankSpread": 13
+    },
+    {
+      "accountId": "ACC-1021",
+      "name": "Riverbend Cancer Centre",
+      "archetype": "Academic Medical Centre",
+      "region": "Northeast",
+      "affiliatedHcpCount": 14,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.48,
+        "medicare": 0.22,
+        "medicaid": 0.2
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 60.6,
+        "FN-BRAND": 36.6,
+        "FN-MEDICAL": 55.4,
+        "FN-ACCESS": 25.1,
+        "FN-DIGITAL": 22.8
+      },
+      "enterpriseScore": 42.3,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": false,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.182
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.066
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.089
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.055
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.032
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 15,
+        "FN-ACCESS": 19,
+        "FN-MEDICAL": 18,
+        "FN-DIGITAL": 19,
+        "FN-BRAND": 14
+      },
+      "enterpriseRank": 21,
+      "rankSpread": 5
+    },
+    {
+      "accountId": "ACC-1022",
+      "name": "Thornton Medical Network",
+      "archetype": "Community Oncology Network",
+      "region": "Southeast",
+      "affiliatedHcpCount": 10,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.66,
+        "medicare": 0.25,
+        "medicaid": 0.07
+      },
+      "specialtyPharmacyAligned": true,
+      "formularyStatus": "Non-preferred",
+      "functionScores": {
+        "FN-SALES": 51.2,
+        "FN-BRAND": 52.9,
+        "FN-MEDICAL": 52.3,
+        "FN-ACCESS": 54.7,
+        "FN-DIGITAL": 23.2
+      },
+      "enterpriseScore": 48.5,
+      "enterpriseTier": 3,
+      "capacityCeilingPerMonth": 2,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.154
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.095
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.084
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.12
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.032
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 18,
+        "FN-ACCESS": 16,
+        "FN-MEDICAL": 20,
+        "FN-DIGITAL": 17,
+        "FN-BRAND": 3
+      },
+      "enterpriseRank": 20,
+      "rankSpread": 17
+    },
+    {
+      "accountId": "ACC-1023",
+      "name": "Lindfield Oncology Associates",
+      "archetype": "Integrated Delivery Network",
+      "region": "Midwest",
+      "affiliatedHcpCount": 36,
+      "idnParent": "Lindfield Health",
+      "payerMix": {
+        "commercial": 0.67,
+        "medicare": 0.39,
+        "medicaid": 0.05
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 51.0,
+        "FN-BRAND": 43.9,
+        "FN-MEDICAL": 57.6,
+        "FN-ACCESS": 74.5,
+        "FN-DIGITAL": 30.9
+      },
+      "enterpriseScore": 53.1,
+      "enterpriseTier": 2,
+      "capacityCeilingPerMonth": 3,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": true
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.153
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.079
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.092
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.164
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.043
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 19,
+        "FN-ACCESS": 9,
+        "FN-MEDICAL": 17,
+        "FN-DIGITAL": 15,
+        "FN-BRAND": 10
+      },
+      "enterpriseRank": 14,
+      "rankSpread": 10
+    },
+    {
+      "accountId": "ACC-1024",
+      "name": "Carrington Health System",
+      "archetype": "Independent Practice",
+      "region": "West",
+      "affiliatedHcpCount": 29,
+      "idnParent": null,
+      "payerMix": {
+        "commercial": 0.45,
+        "medicare": 0.39,
+        "medicaid": 0.1
+      },
+      "specialtyPharmacyAligned": false,
+      "formularyStatus": "Not listed",
+      "functionScores": {
+        "FN-SALES": 89.3,
+        "FN-BRAND": 40.1,
+        "FN-MEDICAL": 92.9,
+        "FN-ACCESS": 91.2,
+        "FN-DIGITAL": 68.3
+      },
+      "enterpriseScore": 78.5,
+      "enterpriseTier": 1,
+      "capacityCeilingPerMonth": 5,
+      "capacityConsumedThisMonth": 0,
+      "consent": {
+        "email": true,
+        "remoteDetail": false
+      },
+      "featureContributions": [
+        {
+          "feature": "Rx potential (12m)",
+          "contribution": 0.268
+        },
+        {
+          "feature": "Competitive switch risk",
+          "contribution": 0.072
+        },
+        {
+          "feature": "Scientific influence index",
+          "contribution": 0.149
+        },
+        {
+          "feature": "Access friction",
+          "contribution": 0.201
+        },
+        {
+          "feature": "Digital responsiveness",
+          "contribution": 0.096
+        }
+      ],
+      "functionRanks": {
+        "FN-SALES": 6,
+        "FN-ACCESS": 2,
+        "FN-MEDICAL": 1,
+        "FN-DIGITAL": 5,
+        "FN-BRAND": 12
+      },
+      "enterpriseRank": 1,
+      "rankSpread": 11
+    }
+  ],
+  "policy": {
+    "policyVersion": "v1.4.0",
+    "effectiveFrom": "2026-09-01",
+    "owner": "Enterprise Engagement Council",
+    "hardConstraints": [
+      {
+        "id": "HC-01",
+        "name": "Medical\u2013Commercial firewall",
+        "rule": "Medical claims never sequence relative to commercial claims; they execute on a separate track and are invisible to commercial views.",
+        "severity": "blocking"
+      },
+      {
+        "id": "HC-02",
+        "name": "Consent state",
+        "rule": "A channel claim is ineligible where consent for that channel is absent or withdrawn.",
+        "severity": "blocking"
+      },
+      {
+        "id": "HC-03",
+        "name": "MLR-approved content only",
+        "rule": "Any claim referencing unapproved content is ineligible until approval is recorded.",
+        "severity": "blocking"
+      },
+      {
+        "id": "HC-04",
+        "name": "Engagement frequency ceiling",
+        "rule": "Total scheduled touches per account per month must not exceed the enterprise capacity ceiling.",
+        "severity": "blocking"
+      },
+      {
+        "id": "HC-05",
+        "name": "Minimum inter-touch interval",
+        "rule": "No two commercial touches within 5 calendar days for the same account.",
+        "severity": "blocking"
+      }
+    ],
+    "tieBreakRules": [
+      {
+        "id": "TB-01",
+        "priority": 1,
+        "name": "Fulfilment barrier outranks promotion",
+        "rule": "Where an access barrier is blocking fulfilment, the access claim is sequenced ahead of any promotional detailing claim.",
+        "rationale": "A promoted product that cannot be dispensed generates cost without outcome."
+      },
+      {
+        "id": "TB-02",
+        "priority": 2,
+        "name": "Scientific track separation",
+        "rule": "Medical claims are routed to the firewalled track and neither block nor are blocked by commercial claims.",
+        "rationale": "Compliance boundary; not a priority judgement."
+      },
+      {
+        "id": "TB-03",
+        "priority": 3,
+        "name": "Enterprise resolves brand contention",
+        "rule": "Where two brands claim the same account in the same window, the enterprise tier decides; brand priority scores are not comparable across brands.",
+        "rationale": "Brand scores are calibrated within a brand, not across the portfolio."
+      },
+      {
+        "id": "TB-04",
+        "priority": 4,
+        "name": "Sequence dependency respected",
+        "rule": "A claim declaring a prerequisite cannot be scheduled before its prerequisite is scheduled.",
+        "rationale": "Ordering carries the value, not the touch count."
+      },
+      {
+        "id": "TB-05",
+        "priority": 5,
+        "name": "Non-response decay",
+        "rule": "Where the prior touch went unanswered, the next claim from the same channel is deprioritised by one rank.",
+        "rationale": "Avoids compounding channel fatigue."
+      }
+    ],
+    "autonomyTiers": [
+      {
+        "tier": 0,
+        "label": "Safe today",
+        "scope": "Signal refresh, deduplication, internal routing",
+        "requires": "Nothing"
+      },
+      {
+        "tier": 1,
+        "label": "Unlocked by shared priority",
+        "scope": "Capacity allocation, target reconciliation",
+        "requires": "Enterprise tier with agreed ceiling"
+      },
+      {
+        "tier": 2,
+        "label": "Unlocked by owned arbitration",
+        "scope": "Sequencing, suppression, plan generation",
+        "requires": "Named enterprise owner and versioned rules"
+      },
+      {
+        "tier": 3,
+        "label": "Permanently human",
+        "scope": "Promotional claims, pricing, customer-facing without approver",
+        "requires": "Never autonomous"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claimId": "CLM-4401",
+      "accountId": "ACC-1003",
+      "functionId": "FN-ACCESS",
+      "brandId": "BRD-A",
+      "title": "Resolve specialty pharmacy routing failure",
+      "objective": "Clear the dispensing barrier blocking three pending starts",
+      "channel": "In person",
+      "requestedWindow": "Week 1",
+      "durationMins": 45,
+      "assertedValue": 88,
+      "valueBasis": "3 patients blocked at fulfilment; 14-day average delay",
+      "prerequisiteFor": [
+        "CLM-4402"
+      ],
+      "dependsOn": [],
+      "evidence": [
+        "SP rejection volume up 240% over 30 days",
+        "Two prescriber complaints logged"
+      ],
+      "contentApproved": true,
+      "consentRequired": false
+    },
+    {
+      "claimId": "CLM-4402",
+      "accountId": "ACC-1003",
+      "functionId": "FN-SALES",
+      "brandId": "BRD-A",
+      "title": "Detail efficacy outcomes and recent payer win",
+      "objective": "Convert intent to first-line prescribing among four writers",
+      "channel": "In person",
+      "requestedWindow": "Week 1",
+      "durationMins": 30,
+      "assertedValue": 81,
+      "valueBasis": "Four identified writers; formulary win 11 days ago",
+      "prerequisiteFor": [],
+      "dependsOn": [
+        "CLM-4401"
+      ],
+      "evidence": [
+        "Preferred status confirmed with regional payer",
+        "Prior call receptive, no follow-up booked"
+      ],
+      "contentApproved": true,
+      "consentRequired": false
+    },
+    {
+      "claimId": "CLM-4403",
+      "accountId": "ACC-1003",
+      "functionId": "FN-DIGITAL",
+      "brandId": "BRD-A",
+      "title": "Enrol writers in formulary-win email sequence",
+      "objective": "Reinforce access message after field contact",
+      "channel": "Email",
+      "requestedWindow": "Week 2",
+      "durationMins": 0,
+      "assertedValue": 54,
+      "valueBasis": "Segment open rate 41% over trailing quarter",
+      "prerequisiteFor": [],
+      "dependsOn": [
+        "CLM-4402"
+      ],
+      "evidence": [
+        "Approved modular content available",
+        "Consent on file for 9 of 12 targets"
+      ],
+      "contentApproved": true,
+      "consentRequired": true
+    },
+    {
+      "claimId": "CLM-4404",
+      "accountId": "ACC-1003",
+      "functionId": "FN-MEDICAL",
+      "brandId": "BRD-A",
+      "title": "Scientific exchange on combination sequencing data",
+      "objective": "Address unsolicited question raised at congress",
+      "channel": "In person",
+      "requestedWindow": "Week 2",
+      "durationMins": 60,
+      "assertedValue": 76,
+      "valueBasis": "Unsolicited request logged; KOL influence index 84",
+      "prerequisiteFor": [],
+      "dependsOn": [],
+      "evidence": [
+        "Request recorded 6 days ago",
+        "No MSL contact in 14 months"
+      ],
+      "contentApproved": true,
+      "consentRequired": false
+    },
+    {
+      "claimId": "CLM-4405",
+      "accountId": "ACC-1003",
+      "functionId": "FN-BRAND",
+      "brandId": "BRD-C",
+      "title": "Competitive defence detail \u2014 Arvexa",
+      "objective": "Protect share against competitor launch in immunology",
+      "channel": "In person",
+      "requestedWindow": "Week 2",
+      "durationMins": 30,
+      "assertedValue": 79,
+      "valueBasis": "Brand-calibrated switch risk score 79",
+      "prerequisiteFor": [],
+      "dependsOn": [],
+      "evidence": [
+        "Competitor launch activity detected in region"
+      ],
+      "contentApproved": true,
+      "consentRequired": false
+    },
+    {
+      "claimId": "CLM-4406",
+      "accountId": "ACC-1003",
+      "functionId": "FN-DIGITAL",
+      "brandId": "BRD-B",
+      "title": "Speaker programme invitation \u2014 Netrivo",
+      "objective": "Drive attendance at regional programme",
+      "channel": "Email",
+      "requestedWindow": "Week 3",
+      "durationMins": 0,
+      "assertedValue": 38,
+      "valueBasis": "Standing quarterly campaign",
+      "prerequisiteFor": [],
+      "dependsOn": [],
+      "evidence": [
+        "No attendance from this account in 12 months",
+        "Two prior invitations unopened"
+      ],
+      "contentApproved": true,
+      "consentRequired": true
+    },
+    {
+      "claimId": "CLM-4407",
+      "accountId": "ACC-1003",
+      "functionId": "FN-ACCESS",
+      "brandId": "BRD-A",
+      "title": "Pre-brief account ahead of formulary review",
+      "objective": "Equip the account for the payer committee submission",
+      "channel": "In person",
+      "requestedWindow": "Week 4",
+      "durationMins": 45,
+      "assertedValue": 84,
+      "valueBasis": "Committee decision affects 40+ patients",
+      "prerequisiteFor": [],
+      "dependsOn": [],
+      "evidence": [
+        "Committee agenda published 2 days ago"
+      ],
+      "contentApproved": true,
+      "consentRequired": false,
+      "admittedAtVersion": 3
+    }
+  ],
+  "arbitration": {
+    "runId": "RUN-2026-09-A",
+    "accountId": "ACC-1003",
+    "policyVersion": "v1.4.0",
+    "cycle": "2026-09",
+    "capacityCeiling": 3,
+    "decidedBy": "system",
+    "decisions": [
+      {
+        "claimId": "CLM-4401",
+        "status": "scheduled",
+        "sequence": 1,
+        "window": "Week 1",
+        "reasonCode": "TB-01",
+        "reason": "Fulfilment barrier outranks promotional detailing. Three starts are blocked; clearing this unlocks the value of every later touch."
+      },
+      {
+        "claimId": "CLM-4402",
+        "status": "scheduled",
+        "sequence": 2,
+        "window": "Week 2",
+        "reasonCode": "TB-04",
+        "reason": "Sequenced after its declared prerequisite. Detailing lands once the dispensing path is open."
+      },
+      {
+        "claimId": "CLM-4403",
+        "status": "scheduled",
+        "sequence": 3,
+        "window": "Week 4",
+        "reasonCode": "HC-05",
+        "reason": "Held to week 4 to respect the minimum inter-touch interval after the field visit. Consent verified for 9 of 12 targets; 3 excluded."
+      },
+      {
+        "claimId": "CLM-4404",
+        "status": "routed",
+        "sequence": null,
+        "window": "Week 2",
+        "reasonCode": "TB-02",
+        "reason": "Routed to the firewalled scientific track. Not sequenced against commercial claims and not visible in commercial views."
+      },
+      {
+        "claimId": "CLM-4405",
+        "status": "suppressed",
+        "sequence": null,
+        "window": null,
+        "reasonCode": "TB-03",
+        "reason": "Two brands claimed this account in the same window. Enterprise tier resolved in favour of Velaxan, which carries an active fulfilment dependency. Arvexa claim returns to the queue next cycle."
+      },
+      {
+        "claimId": "CLM-4406",
+        "status": "suppressed",
+        "sequence": null,
+        "window": null,
+        "reasonCode": "TB-05",
+        "reason": "Deprioritised under non-response decay \u2014 two prior invitations unopened and no attendance in 12 months. Capacity ceiling reached."
+      }
+    ],
+    "capacityAfter": {
+      "ceiling": 3,
+      "scheduled": 3,
+      "remaining": 0,
+      "firewalledTrack": 1
+    }
+  },
+  "signals": [
+    {
+      "signalId": "SIG-01",
+      "tOffsetSec": 4,
+      "day": "Day 3",
+      "type": "access",
+      "severity": "high",
+      "headline": "Specialty pharmacy rejection cleared",
+      "detail": "Routing correction confirmed; three pending starts released.",
+      "effect": "replan",
+      "narrative": "Prerequisite satisfied early \u2014 detailing claim becomes eligible sooner."
+    },
+    {
+      "signalId": "SIG-02",
+      "tOffsetSec": 10,
+      "day": "Day 6",
+      "type": "competitive",
+      "severity": "medium",
+      "headline": "Competitor approval announced in adjacent indication",
+      "detail": "Regional field activity expected to increase.",
+      "effect": "no-change",
+      "narrative": "Noted. Below the re-decision threshold \u2014 plan holds."
+    },
+    {
+      "signalId": "SIG-03",
+      "tOffsetSec": 16,
+      "day": "Day 11",
+      "type": "engagement",
+      "severity": "medium",
+      "headline": "Field visit completed \u2014 receptive, follow-up requested",
+      "detail": "Two additional writers identified during the call.",
+      "effect": "capacity-debit",
+      "narrative": "One touch consumed. Two remain against the ceiling."
+    },
+    {
+      "signalId": "SIG-04",
+      "tOffsetSec": 22,
+      "day": "Day 15",
+      "type": "access",
+      "severity": "high",
+      "headline": "Formulary review scheduled for next cycle",
+      "detail": "Payer committee agenda published.",
+      "effect": "replan",
+      "narrative": "New access claim admitted; digital touch moves later to protect the window."
+    },
+    {
+      "signalId": "SIG-05",
+      "tOffsetSec": 28,
+      "day": "Day 19",
+      "type": "engagement",
+      "severity": "low",
+      "headline": "Email sequence \u2014 no opens after 72 hours",
+      "detail": "Nine recipients, zero engagement.",
+      "effect": "replan",
+      "narrative": "Non-response decay applied. Remaining digital claim deprioritised."
+    },
+    {
+      "signalId": "SIG-06",
+      "tOffsetSec": 34,
+      "day": "Day 24",
+      "type": "medical",
+      "severity": "medium",
+      "headline": "Second unsolicited scientific request logged",
+      "detail": "Separate prescriber, same combination question.",
+      "effect": "firewall-track",
+      "narrative": "Added to the scientific track. No effect on commercial sequence by design."
+    }
+  ],
+  "planVersions": [
+    {
+      "version": 1,
+      "createdAt": "2026-09-01T08:00:00Z",
+      "trigger": "Cycle open",
+      "scheduled": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4403"
+      ],
+      "suppressed": [
+        "CLM-4405",
+        "CLM-4406"
+      ],
+      "routed": [
+        "CLM-4404"
+      ]
+    },
+    {
+      "version": 2,
+      "createdAt": "2026-09-03T14:20:00Z",
+      "trigger": "SIG-01 \u2014 barrier cleared",
+      "scheduled": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4403"
+      ],
+      "suppressed": [
+        "CLM-4405",
+        "CLM-4406"
+      ],
+      "routed": [
+        "CLM-4404"
+      ],
+      "note": "Detailing advanced from Week 2 to Week 2 early."
+    },
+    {
+      "version": 3,
+      "createdAt": "2026-09-15T09:05:00Z",
+      "trigger": "SIG-04 \u2014 formulary review scheduled",
+      "scheduled": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4407"
+      ],
+      "suppressed": [
+        "CLM-4403",
+        "CLM-4405",
+        "CLM-4406"
+      ],
+      "routed": [
+        "CLM-4404"
+      ],
+      "note": "New access claim CLM-4407 admitted; digital claim suppressed for capacity."
+    }
+  ],
+  "roleViews": [
+    {
+      "roleId": "ROLE-REP",
+      "label": "Oncology Specialist",
+      "surface": "Veeva task list (simulated)",
+      "sees": [
+        "CLM-4402"
+      ],
+      "hidden": [
+        "CLM-4404"
+      ],
+      "note": "Sees own action, the week, and what has already been said. Never sees the medical track."
+    },
+    {
+      "roleId": "ROLE-FRM",
+      "label": "Reimbursement Specialist",
+      "surface": "Case queue (simulated)",
+      "sees": [
+        "CLM-4401",
+        "CLM-4407"
+      ],
+      "hidden": [
+        "CLM-4404"
+      ],
+      "note": "Sees the barrier flagged ahead of the rep call, with the dependency made explicit."
+    },
+    {
+      "roleId": "ROLE-DIGITAL",
+      "label": "Campaign Manager",
+      "surface": "Campaign console (simulated)",
+      "sees": [
+        "CLM-4403"
+      ],
+      "hidden": [
+        "CLM-4404"
+      ],
+      "note": "Sees send window, suppression flags and consent exclusions."
+    },
+    {
+      "roleId": "ROLE-MSL",
+      "label": "Medical Science Liaison",
+      "surface": "Medical platform (simulated)",
+      "sees": [
+        "CLM-4404"
+      ],
+      "hidden": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4403",
+        "CLM-4405",
+        "CLM-4406",
+        "CLM-4407"
+      ],
+      "note": "Sees only the firewalled track. Commercial plan is not visible."
+    },
+    {
+      "roleId": "ROLE-BRAND",
+      "label": "Brand Lead",
+      "surface": "Brand claim outcomes",
+      "sees": [
+        "CLM-4405"
+      ],
+      "hidden": [
+        "CLM-4404"
+      ],
+      "note": "Sees where claims won and lost, with the governing rule and a contest action."
+    },
+    {
+      "roleId": "ROLE-OWNER",
+      "label": "Enterprise Engagement Owner",
+      "surface": "Enterprise console \u2014 the only new UI",
+      "sees": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4403",
+        "CLM-4405",
+        "CLM-4406",
+        "CLM-4407"
+      ],
+      "hidden": [],
+      "note": "Sees the whole plan, the trade-offs and the override control."
+    }
+  ],
+  "overrideScenario": {
+    "scenarioId": "OVR-01",
+    "trigger": "Enterprise owner reinstates the suppressed Arvexa claim",
+    "claimId": "CLM-4405",
+    "requiredReason": true,
+    "exampleReason": "Regional competitor launch is material this cycle; accept the trade-off.",
+    "consequence": {
+      "reinstated": "CLM-4405",
+      "displaced": "CLM-4403",
+      "displacedReason": "Capacity ceiling is 3. Reinstating Arvexa displaces the lowest-ranked scheduled claim.",
+      "ledgerEntry": "Decision record DR-9912 \u2014 manual override, policy v1.4.0, approver: Enterprise Engagement Owner"
+    }
+  },
+  "tierChangeScenario": {
+    "scenarioId": "TIER-01",
+    "description": "Connective demo \u2014 change the upstream tier and re-run downstream unchanged.",
+    "accountId": "ACC-1003",
+    "from": {
+      "tier": 2,
+      "ceiling": 3,
+      "scheduled": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4403"
+      ],
+      "suppressed": [
+        "CLM-4405",
+        "CLM-4406"
+      ]
+    },
+    "to": {
+      "tier": 1,
+      "ceiling": 5,
+      "scheduled": [
+        "CLM-4401",
+        "CLM-4402",
+        "CLM-4405",
+        "CLM-4403",
+        "CLM-4406"
+      ],
+      "suppressed": []
+    },
+    "message": "No arbitration logic changed. The upstream segmentation decision changed the downstream plan."
+  },
+  "kpis": {
+    "before": {
+      "conflictRate": null,
+      "suppressionRate": null,
+      "capacityUtilisation": null,
+      "planAdherence": null,
+      "note": "Not computable \u2014 interactions are logged per persona, with no joint engagement identifier."
+    },
+    "after": {
+      "conflictRatePct": 34,
+      "suppressionRatePct": 22,
+      "capacityUtilisationPct": 87,
+      "planAdherencePct": 91,
+      "duplicateTouchesAvoided": 2,
+      "note": "Illustrative values for demo purposes only."
+    }
+  }
+}
