@@ -1,13 +1,19 @@
-DATA_PROMPT_PACK.md — Synthetic Data for the Living Segmentation Demo
-Purpose: Run these prompts in sequence in AI Studio / Antigravity (or any LLM) to generate a coherent, linked synthetic dataset for the HCP / account segmentation demo.
-How to use
-Paste Prompt 0 first. It sets shared rules for the whole session.
-Run Prompts 1–9 in order. Each one builds on tables created before it.
-Run Prompt 10 last to validate the full set.
-Save outputs to `/data/` using the file names given.
+# DATA_PROMPT_PACK.md — Synthetic Data for the Living Segmentation Demo
+
+**Purpose:** Run these prompts in sequence in AI Studio / Antigravity (or any LLM) to generate a coherent, linked synthetic dataset for the HCP / account segmentation demo.
+
+**How to use**
+1. Paste **Prompt 0** first. It sets shared rules for the whole session.
+2. Run Prompts 1–9 in order. Each one builds on tables created before it.
+3. Run **Prompt 10** last to validate the full set.
+4. Save outputs to `/data/` using the file names given.
+
 > **Design choice:** Each prompt asks the model to write a **seeded generator script** (TypeScript, runs in the browser or Node), not to type out rows directly. This keeps data reproducible, internally consistent, and easy to resize. It also keeps the app LLM-agnostic, because the data does not depend on a live model.
+
 ---
-Prompt 0 — Master context (paste once, at the start)
+
+## Prompt 0 — Master context (paste once, at the start)
+
 ```
 You are a synthetic data engineer for a pharma commercial analytics demo called
 "Living Segmentation" (HCP and account segmentation that updates continuously
@@ -30,8 +36,11 @@ Global rules for every prompt in this session:
   missing values where a market lacks a source, and believable noise.
 - After the code, print: row counts per file, column dictionary, and 3 sample rows.
 ```
+
 ---
-Prompt 1 — Reference data
+
+## Prompt 1 — Reference data
+
 ```
 Generate reference tables:
 1. markets.csv: market_id, market_name, region, data_maturity (High/Medium/Low),
@@ -44,7 +53,9 @@ Generate reference tables:
    Include Cardiology, Endocrinology, Nephrology, Internal Medicine, GP/FM,
    Diabetology, Other.
 ```
-Prompt 2 — HCP master
+
+## Prompt 2 — HCP master
+
 ```
 Generate hcps.csv (~2,300 rows across 3 markets):
 hcp_id, market_id, territory_id, first_name, last_name (fictional, locally
@@ -55,7 +66,9 @@ preferred_channel (F2F/Remote/Email/None), is_active, created_date.
 Rules: ~40% GP/FM, ~20% Cardiology, ~15% Endocrinology, rest spread.
 Market C: 20% of sub_specialty and preferred_channel are null.
 ```
-Prompt 3 — Accounts and affiliations
+
+## Prompt 3 — Accounts and affiliations
+
 ```
 Generate:
 1. accounts.csv (~450 rows): account_id, market_id, territory_id,
@@ -68,7 +81,9 @@ Generate:
 Rules: every HCP has 1 primary affiliation; ~30% have 2–3 affiliations.
 Each IDN has at least one Decision Maker.
 ```
-Prompt 4 — Prescribing and sales (monthly)
+
+## Prompt 4 — Prescribing and sales (monthly)
+
 ```
 Generate:
 1. hcp_rx_monthly.csv – ONLY for Market A: month, hcp_id, product_id, trx, nrx,
@@ -85,7 +100,9 @@ Nephrology and KOL HCPs. Plant 3 behaviour shifts for the demo:
   (c) ~40 early Nephrova adopters stand out by Jun 2026.
 Log these in planted_events.csv (event_id, description, affected_ids, start_month).
 ```
-Prompt 5 — Field and digital engagement
+
+## Prompt 5 — Field and digital engagement
+
 ```
 Generate:
 1. crm_interactions.csv: interaction_id, date, hcp_id, account_id, rep_id,
@@ -100,7 +117,9 @@ Rules: call frequency matches the old static segment (high-potential HCPs get
 more calls), so engagement looks misallocated once living segments diverge.
 Email open rate ~22%, click rate ~3%. Rep IDs map to territories.
 ```
-Prompt 6 — Legacy static segmentation (baseline)
+
+## Prompt 6 — Legacy static segmentation (baseline)
+
 ```
 Generate legacy_segments.csv: hcp_id, market_id, legacy_segment
 (A/B/C/D), legacy_decile, assigned_date (one annual run, Jan 2025),
@@ -108,7 +127,9 @@ method ("Annual decile on prior-year volume").
 This is the "as-is" baseline. It must NOT reflect the planted shifts from
 Prompt 4, so the demo can show where the static view becomes stale.
 ```
-Prompt 7 — Living segmentation outputs
+
+## Prompt 7 — Living segmentation outputs
+
 ```
 Generate the outputs of the living segmentation engine:
 1. segment_definitions.csv: segment_id, segment_name, description, priority,
@@ -129,7 +150,9 @@ Rules:
   Market C scores rely on CRM and rep estimates (proxy features).
 - ~15% of HCPs: legacy segment ≠ current living segment (the "stale gap").
 ```
-Prompt 8 — Model runs and process KPIs
+
+## Prompt 8 — Model runs and process KPIs
+
 ```
 Generate:
 1. model_runs.csv: run_id, run_date (weekly), market_id, model_version,
@@ -143,7 +166,9 @@ Generate:
 Rules: values improve after the "go-live" month (Jan 2026); Market C improves
 least and stays below Markets A and B.
 ```
-Prompt 9 — Data quality and feedback loop
+
+## Prompt 9 — Data quality and feedback loop
+
 ```
 Generate:
 1. data_quality_issues.csv: issue_id, detected_date, market_id, source,
@@ -155,7 +180,9 @@ Generate:
    ~200 rows, ~35% accepted; more feedback in Market C (rep knowledge fills
    data gaps).
 ```
-Prompt 10 — Validation (run last)
+
+## Prompt 10 — Validation (run last)
+
 ```
 Write validate.ts that checks all /data files and prints a PASS/FAIL report:
 - Primary keys unique; all foreign keys resolve.
@@ -168,21 +195,26 @@ Write validate.ts that checks all /data files and prints a PASS/FAIL report:
 - Nephrova volume = 0 before Apr 2026.
 Then print a short summary of the demo stories the data supports.
 ```
+
 ---
-Output files at a glance
-#	File	Feeds dashboard
-1	markets, territories, products, specialties	Filters, all views
-2	hcps	Input data exploration
-3	accounts, hcp_account_affiliations	Account view, IDN hierarchy
-4	hcp_rx_monthly, account_sales_monthly, rep_potential_estimates, planted_events	Input exploration, drivers
-5	crm_interactions, digital_engagement, events_attendance	Engagement / call alignment
-6	legacy_segments	Static vs living comparison
-7	segment_definitions, hcp/account_segment_snapshots, segment_transitions	Segmentation output analysis
-8	model_runs, process_kpis_monthly	Process KPIs, model health
-9	data_quality_issues, rep_feedback	Data quality, human-in-the-loop
-Demo stories built into the data
-Static segments go stale: Endocrinologists moving to Glyronal are still marked "Maintain" in the legacy view.
-Access shock: an IDN loses formulary status, and its HCPs move to "Access-Constrained" within a month.
-Launch early adopters: Nephrova adopters show up by Jun 2026.
-Works in low-data markets: Market C runs on proxies and rep input, and shows lower confidence clearly.
-Faster cycle: segmentation refresh drops from ~90 days to ~7 days.
+
+## Output files at a glance
+
+| # | File | Feeds dashboard |
+|---|------|-----------------|
+| 1 | markets, territories, products, specialties | Filters, all views |
+| 2 | hcps | Input data exploration |
+| 3 | accounts, hcp_account_affiliations | Account view, IDN hierarchy |
+| 4 | hcp_rx_monthly, account_sales_monthly, rep_potential_estimates, planted_events | Input exploration, drivers |
+| 5 | crm_interactions, digital_engagement, events_attendance | Engagement / call alignment |
+| 6 | legacy_segments | Static vs living comparison |
+| 7 | segment_definitions, hcp/account_segment_snapshots, segment_transitions | Segmentation output analysis |
+| 8 | model_runs, process_kpis_monthly | Process KPIs, model health |
+| 9 | data_quality_issues, rep_feedback | Data quality, human-in-the-loop |
+
+## Demo stories built into the data
+1. **Static segments go stale:** Endocrinologists moving to Glyronal are still marked "Maintain" in the legacy view.
+2. **Access shock:** an IDN loses formulary status, and its HCPs move to "Access-Constrained" within a month.
+3. **Launch early adopters:** Nephrova adopters show up by Jun 2026.
+4. **Works in low-data markets:** Market C runs on proxies and rep input, and shows lower confidence clearly.
+5. **Faster cycle:** segmentation refresh drops from ~90 days to ~7 days.
