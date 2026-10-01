@@ -1,25 +1,35 @@
-PROMPT_PACK.md — Continuum Screen Build Prompts
-Purpose: Step-by-step build prompts for AI Studio / Antigravity. Run them in order, one per session turn. Each prompt builds on the one before it.
-Before you start
-AI Studio: paste PROJECT_BRIEF.md into System Instructions. Antigravity: save it as `AGENTS.md` in the repo root.
-Put DATA_SPEC.md, GOVERNANCE_CONFIG.json and `/data/*.json` in the project before Prompt 1.
-Every prompt ends with the same check. If it fails, fix it before moving on.
-Standard check (paste at the end of every prompt if the tool doesn't keep context)
+# PROMPT_PACK.md — Continuum Screen Build Prompts
+
+**Purpose:** Step-by-step build prompts for AI Studio / Antigravity. Run them in order, one per session turn. Each prompt builds on the one before it.
+
+**Before you start**
+- **AI Studio:** paste PROJECT_BRIEF.md into *System Instructions*. **Antigravity:** save it as `AGENTS.md` in the repo root.
+- Put DATA_SPEC.md, GOVERNANCE_CONFIG.json and `/data/*.json` in the project before Prompt 1.
+- Every prompt ends with the same **check**. If it fails, fix it before moving on.
+
+**Standard check (paste at the end of every prompt if the tool doesn't keep context)**
 ```
 CHECK: app compiles with no TypeScript errors; all existing routes render;
 no data is hard-coded in screens (reads only via dataService.ts); no LLM SDK
 imported; hero path still works. List the files you created or changed.
 ```
-Build sequence
-Phase	Prompts	Output
-A. Foundation	F1–F5	Scaffold, design system, data + governance services, AI layer, app shell
-B. Screens (hero order)	S01–S15, D01	14 screens, Customer 360, Ask Continuum
-C. Wiring	W1–W3	Live state loop, guided demo, persona QA
-D. Hardening	H1–H2	Edge states, final audit against Definition of Done
+
+**Build sequence**
+
+| Phase | Prompts | Output |
+|---|---|---|
+| A. Foundation | F1–F5 | Scaffold, design system, data + governance services, AI layer, app shell |
+| B. Screens (hero order) | S01–S15, D01 | 14 screens, Customer 360, Ask Continuum |
+| C. Wiring | W1–W3 | Live state loop, guided demo, persona QA |
+| D. Hardening | H1–H2 | Edge states, final audit against Definition of Done |
+
 > **Tip:** if a session drifts, start a fresh one with the brief in System Instructions and paste only the next prompt. Prompts are self-contained for that reason.
+
 ---
-Phase A — Foundation
-F1 · Scaffold
+
+## Phase A — Foundation
+
+### F1 · Scaffold
 ```
 Create the Continuum project per PROJECT_BRIEF Section 8.
 - React 18 + TypeScript + Vite, Tailwind, Recharts, d3-sankey, React Router,
@@ -32,7 +42,8 @@ Create the Continuum project per PROJECT_BRIEF Section 8.
   pages showing only the screen title and its question from Section 5.
 Do not build any screen content yet.
 ```
-F2 · Shared components
+
+### F2 · Shared components
 ```
 Build the shared components in /src/components per PROJECT_BRIEF Section 12.
 ui/: KpiTile (label, value, delta ▲/▼ coloured, optional sparkline), DataTable
@@ -52,7 +63,8 @@ title, soWhat caption and axis labels as required props.
 Add a hidden /dev/components route that shows every component with sample props
 so I can review the design system.
 ```
-F3 · Data and governance services
+
+### F3 · Data and governance services
 ```
 Implement the data layer per PROJECT_BRIEF Sections 9 and 11 and DATA_SPEC.md.
 1. types.ts: interfaces for every /data file, matching DATA_SPEC.md exactly.
@@ -73,7 +85,8 @@ Implement the data layer per PROJECT_BRIEF Sections 9 and 11 and DATA_SPEC.md.
    relative to demoToday.
 Write unit tests for governanceService rules.
 ```
-F4 · LLM-agnostic AI layer
+
+### F4 · LLM-agnostic AI layer
 ```
 Implement the AI layer per PROJECT_BRIEF Section 10.
 - LLMProvider interface: generate({ task, system, input, schema }).
@@ -94,7 +107,8 @@ Implement the AI layer per PROJECT_BRIEF Section 10.
   optional session-only key field (memory only, never persisted). "Test
   connection" button.
 ```
-F5 · App shell, navigation and personas
+
+### F5 · App shell, navigation and personas
 ```
 Build AppShell, SideNav, TopBar and PageHeader per PROJECT_BRIEF Sections 5 and 12.
 - SideNav 240px (collapsible to 64px), five groups with their questions as
@@ -111,10 +125,14 @@ Build AppShell, SideNav, TopBar and PageHeader per PROJECT_BRIEF Sections 5 and 
 - About modal with the positioning line and the living segmentation definition
   from Section 1.
 ```
+
 ---
-Phase B — Screens
+
+## Phase B — Screens
+
 > Each prompt lists: **question · layout · data · actions · AI · acceptance**. Build screens in this order: it follows the hero storyline, so each part of the demo works as soon as it is built.
-S01 · Executive Cockpit
+
+### S01 · Executive Cockpit
 ```
 Build S01 Executive Cockpit. Question: "Is segmentation healthy and worth it?"
 Layout:
@@ -129,7 +147,8 @@ Data: aggregates.json + live store. Respect market and brand filters.
 Read-only for every persona; Export (PNG/CSV) for P6.
 Acceptance: numbers change after approvals/publish in later screens.
 ```
-S12 · Segment Health (Standardisation tab first for hero step 1)
+
+### S12 · Segment Health (Standardisation tab first for hero step 1)
 ```
 Build S12 Segment Health. Question: "Are our segments current and trusted?"
 Tabs:
@@ -145,7 +164,8 @@ Tabs:
    mapped to the global standard."
 Deep-linkable tabs (?tab=standardisation) for guided demo.
 ```
-S08 · Segment Insights
+
+### S08 · Segment Insights
 ```
 Build S08 Segment Insights. Question: "What do our segments tell us?"
 Seven deep-linkable tabs:
@@ -163,7 +183,8 @@ Seven deep-linkable tabs:
    shift after publish (reads publishLog + downstream_impact).
 Read-only for P6.
 ```
-S04 · Market Data
+
+### S04 · Market Data
 ```
 Build S04 Market Data. Question: "Is each market's data ready?"
 Tabs:
@@ -179,7 +200,8 @@ Tabs:
    market (A/B/C ticks).
 P2 sees own market only.
 ```
-S05 · Data Intake
+
+### S05 · Data Intake
 ```
 Build S05 Data Intake (hero step 3: onboard Market C). Question: "Can we bring
 this market's file into the global standard?"
@@ -195,7 +217,8 @@ Four-step stepper:
 P5 Local Agency: sees only this screen, can upload and view results, cannot
 submit to library (button shows reason).
 ```
-S06 · Segmentation Studio
+
+### S06 · Segmentation Studio
 ```
 Build S06 Segmentation Studio (hero step 4). Question: "Build a segmentation
 within my market's rights."
@@ -211,7 +234,8 @@ Four steps:
 "Save as version" → Draft in S07, audit entry, toast. Enforce rights via
 governanceService (P2 own market only; P6 none).
 ```
-S07 · Segment Library
+
+### S07 · Segment Library
 ```
 Build S07 Segment Library. Question: "Which segmentation versions do we have?"
 - Table: version, market, brand, method, parameters, created by/date, status
@@ -224,7 +248,8 @@ Build S07 Segment Library. Question: "Which segmentation versions do we have?"
   moves with a "Send to Review Queue" button.
 Only the Active version can publish.
 ```
-S09 · Change Monitor (signature screen)
+
+### S09 · Change Monitor (signature screen)
 ```
 Build S09 Change Monitor (hero step 6). Question: "What changed, and is it
 material?"
@@ -245,7 +270,8 @@ Tab 3 Drift Flags – flags with dimension, threshold vs observed, ML confidence
 market threshold link to S03, status (→ Proposal / Hold with rule shown).
 Counts filter by market and brand and update live.
 ```
-S10 · Review Queue
+
+### S10 · Review Queue
 ```
 Build S10 Review Queue (hero step 6). Question: "What do I need to decide?"
 - Queue table: customer, type (HCP/Account), dimension, current → proposed,
@@ -264,7 +290,8 @@ Build S10 Review Queue (hero step 6). Question: "What do I need to decide?"
 On approve/reject: audit entry, pipeline counters update, toast "Proposal
 approved · queued for publish".
 ```
-D01 · Customer 360
+
+### D01 · Customer 360
 ```
 Build D01 Customer 360 (HCP and Account variants), opened from any table row.
 HCP: header (name, specialty, market, territory) + current segment with
@@ -278,7 +305,8 @@ for hero account), decision-making model, tier; affiliated HCPs with their
 segments and propagation proposals.
 Breadcrumb back to the originating screen.
 ```
-S11 · Publish to CRM
+
+### S11 · Publish to CRM
 ```
 Build S11 Publish to CRM (hero step 7). Question: "What reaches the field, and
 what changes downstream?"
@@ -293,7 +321,8 @@ what changes downstream?"
 - Publish log table. Banner: "Unapproved write-backs: 0".
 - Note on screen: "Continuum publishes to these systems; it replaces none of them."
 ```
-S13 · Audit & Learning
+
+### S13 · Audit & Learning
 ```
 Build S13 Audit & Learning. Question: "Can we prove every change, and are we
 learning safely?"
@@ -308,7 +337,8 @@ Tabs:
    Decline; label "Recommendation — requires model-owner validation. No
    auto-retraining." Live rejections from S10 feed these numbers.
 ```
-S14 · Responsible AI
+
+### S14 · Responsible AI
 ```
 Build S14 Responsible AI. Question: "Is it fair and under control?"
 - Bias check: segment and proposal rates by urban/rural, specialty, gender
@@ -322,7 +352,8 @@ Build S14 Responsible AI. Question: "Is it fair and under control?"
   calibration chart.
 Read-only for all; export for P6.
 ```
-S02 · Value Calculator
+
+### S02 · Value Calculator
 ```
 Build S02 Value Calculator. Question: "What is living segmentation worth?"
 - Inputs (sliders, defaults from aggregates.json): HCP universe, % rising
@@ -334,7 +365,8 @@ Build S02 Value Calculator. Question: "What is living segmentation worth?"
 - Assumptions panel listing every formula in plain language. No promotional
   wording; label as "illustrative estimate".
 ```
-S03 · Global Standards
+
+### S03 · Global Standards
 ```
 Build S03 Global Standards (P1 landing page). Question: "What are the global
 rules?"
@@ -349,7 +381,8 @@ Tabs:
    minimum evidence, conflict rule → Hold. Show "Proposals held by this rule: N".
 Edits flow into governanceService live.
 ```
-S15 · Ask Continuum
+
+### S15 · Ask Continuum
 ```
 Build S15 Ask Continuum as a floating right-side panel (AI-4), available on
 every screen.
@@ -363,9 +396,12 @@ every screen.
   question returns a polite "I can answer questions about segments, changes,
   data readiness and governance in this demo" plus suggestions.
 ```
+
 ---
-Phase C — Wiring
-W1 · Live state loop
+
+## Phase C — Wiring
+
+### W1 · Live state loop
 ```
 Wire the end-to-end state loop per PROJECT_BRIEF Section 11. Verify and fix:
 Approve in S10/D01 → audit entry → S09 counts → S12 KPIs → S01 cockpit → S11
@@ -375,7 +411,8 @@ alignment, publish log. Library activation changes what can publish.
 Demo reset restores every number. Write a short test script that runs the hero
 approve → publish sequence and asserts the counters.
 ```
-W2 · Guided demo
+
+### W2 · Guided demo
 ```
 Implement the Guided demo toggle per PROJECT_BRIEF Section 7.
 - StepIndicator (1–8) in the top bar with step title, Back / Next.
@@ -393,7 +430,8 @@ Implement the Guided demo toggle per PROJECT_BRIEF Section 7.
   tooltip.
 - Exiting the guided demo keeps current state.
 ```
-W3 · Persona QA
+
+### W3 · Persona QA
 ```
 For each persona P1–P6, walk every visible screen and verify against
 PROJECT_BRIEF Section 5.1 and approval_rights.json: landing page, visible nav,
@@ -401,9 +439,12 @@ label overrides, market scope, enabled vs disabled actions with the correct
 tooltip, read-only for P6. Output a PASS/FAIL matrix (persona × screen) and fix
 every FAIL.
 ```
+
 ---
-Phase D — Hardening
-H1 · States and polish
+
+## Phase D — Hardening
+
+### H1 · States and polish
 ```
 On every screen add designed loading, empty and "not available in this market"
 states (never blank). Check: max 4 KPI tiles per row, max 2 charts above the
@@ -412,7 +453,8 @@ wherever a segment appears, AIBadge on every AI output, glossary terms used
 exactly (Section 13), no placeholder text, consistent formatting. Check 1280px
 and 1440px widths. Keep each screen file under ~400 lines.
 ```
-H2 · Definition of done audit
+
+### H2 · Definition of done audit
 ```
 Audit the app against PROJECT_BRIEF Section 15 item by item and Section 6
 (every architecture component visible). Also confirm: Market C never shows
@@ -421,12 +463,16 @@ MockProvider; switching provider in Settings works when a proxy/key is
 supplied; npm run build produces a static dist/ that runs offline.
 Output a checklist with PASS/FAIL and evidence (file/screen), then fix FAILs.
 ```
+
 ---
-Fix-up prompts (use as needed)
-Situation	Prompt
-Agent changed other screens	`Revert changes outside {screen}. Build only what this prompt asks (brief Section 14).`
-Hard-coded data appeared	`Move all data in {file} to dataService.ts queries reading /data. Screens must not contain data.`
-Design drift	`Restyle {screen} to the Section 12 tokens and shared components only. No new colours, gradients or shadows.`
-AI call broke the screen	`Route this through aiService.ts with Zod validation and silent cache fallback. The demo must never break.`
-Hero record missing	`Ensure hero IDs from DATA_SPEC.md appear at the top of {screen} for the guided-demo filters.`
-Screen too long	`Split {screen} into sub-components under /screens/{screen}/ so each file is under 400 lines. No behaviour change.`
+
+## Fix-up prompts (use as needed)
+
+| Situation | Prompt |
+|---|---|
+| Agent changed other screens | `Revert changes outside {screen}. Build only what this prompt asks (brief Section 14).` |
+| Hard-coded data appeared | `Move all data in {file} to dataService.ts queries reading /data. Screens must not contain data.` |
+| Design drift | `Restyle {screen} to the Section 12 tokens and shared components only. No new colours, gradients or shadows.` |
+| AI call broke the screen | `Route this through aiService.ts with Zod validation and silent cache fallback. The demo must never break.` |
+| Hero record missing | `Ensure hero IDs from DATA_SPEC.md appear at the top of {screen} for the guided-demo filters.` |
+| Screen too long | `Split {screen} into sub-components under /screens/{screen}/ so each file is under 400 lines. No behaviour change.` |
